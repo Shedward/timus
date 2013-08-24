@@ -23,13 +23,13 @@ class ObservedCmd(object):
         self.cmd = cmd
         self.process = None
 
-    def run(self, inp="", time_limit=None, mem_limit=None,
+    def run(self, inp=None, time_limit=None, mem_limit=None,
             stdin=PIPE, stdout=PIPE, stderr=STDOUT):
         self.max_rss = 0
         self.time = 0
 
-        self.process = psutil.Popen(self.cmd, stdin=PIPE, stdout=PIPE,
-                                    stderr=STDOUT)
+        self.process = psutil.Popen(self.cmd, stdin=stdin, stdout=stdout,
+                                    stderr=stderr)
 
         def do():
             self.output = self.process.communicate(input=inp)

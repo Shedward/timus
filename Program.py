@@ -2,8 +2,10 @@
 
 from os import path
 import yaml
-from Observed import ObservedCmd, TimeLimitExceeded, MemoryLimitExceeded
+from subprocess import PIPE, STDOUT
+from io import IOBase
 
+from Observed import ObservedCmd, TimeLimitExceeded, MemoryLimitExceeded
 from Logger import Log
 
 
@@ -74,7 +76,16 @@ class Program(object):
         i = 0
         for descr, tst in tests:
             i += 1
-            inp = str(tst["in"]).encode()
+
+            if "in" in tst:
+                inp = str(tst["in"]).encode()
+                stdin = PIPE
+            elif "in file" in tst:
+                inp = None
+                stdin = open(tst["in file"])
+            else:
+                LOG(Log.Err, "No input in test", descr)
+
             out = str(tst["out"]).rstrip().encode()
 
             max_time = 0
@@ -83,8 +94,10 @@ class Program(object):
             cmd = ObservedCmd(self.exec_file())
             try:
                 for _ in range(run_count):
+                    if isinstance(stdin, IOBase):
+                        stdin.seek(0)
                     cmd.run(inp=inp, time_limit=time_limit,
-                            mem_limit=mem_limit)
+                            mem_limit=mem_limit, stdin=stdin)
                     recived = cmd.output[0].rstrip()
                     if cmd.max_rss > max_mem:
                         max_mem = cmd.max_rss
