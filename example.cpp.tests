@@ -1,0 +1,34 @@
+
+# Simple test
+- Basics:
+    in: 2 2
+    out: 4
+
+- Common things:
+    in: 2 5     4 5
+    out: 16
+
+- Multiline:
+    in: |
+        1 2     5
+        5 2 1
+    out: 16
+
+- Negative number:
+    in: |
+        -1 1 -1 1 -1 1 -11 
+        11
+    out: |
+        0
+
+- Bignum:
+    in: 123456789 987654321
+    out: 1111111110
+
+- Wrong test:
+    in: 2 2
+    out: 5
+
+- Many numers:
+    in file: 1 to 999999.txt
+    out: 1783293664
