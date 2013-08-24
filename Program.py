@@ -2,7 +2,7 @@
 
 from os import path
 import yaml
-from subprocess import PIPE, STDOUT
+from subprocess import PIPE
 from io import IOBase
 
 from Observed import ObservedCmd, TimeLimitExceeded, MemoryLimitExceeded
