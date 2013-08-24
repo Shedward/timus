@@ -15,7 +15,7 @@ def FatalError(*args):
 HELP_MESSAGE = """
 timus [OPTIONS] <action> <filename>
 Use one of the action:
-    run     - Run program using by default patern "konsole --hold -e {bin}"
+    run     - Run program using by default pattern "konsole --hold -e {bin}"
               where {bin} is name of executable file.
               Use -c to change patern.
     compile - Compile source file.
@@ -37,7 +37,7 @@ def main():
 
     parser.add_option("-r", "--run", action="store",
                       type="string", dest="cmd",
-                      help="Specify patern for 'run' action",
+                      help="Specify pattern for 'run' action",
                       default="konsole --hold -e {bin}")
 
     parser.add_option("-f", "--force", action="store_true",
@@ -68,8 +68,8 @@ def main():
                            dest="mem_limit", type="string")
 
     parser.add_option("-c", "--run-count", action="store",
-                      help="Specify amount of runing "
-                           "more runs, the more accurate "
+                      help="Specify amount of runing. "
+                           "More runs, the more accurate "
                            "the measurements",
                       dest="run_count", type="int",
                       default=1
