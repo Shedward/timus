@@ -120,6 +120,6 @@ For multiline use |:
 
 Also you can use external file if input is too big for tests file:
 
-    - Many numers:
-        in file: tests
+    - Many numbers:
+        in file: 1 to 999999.txt
         out: 1783293664
