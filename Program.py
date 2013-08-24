@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 
-from subprocess import Popen, PIPE, STDOUT
 from os import path
 import yaml
+from Observed import ObservedCmd, TimeLimitExceeded, MemoryLimitExceeded
 
 from Logger import Log
 
-#######################################################
-#
-#   Base realisation.
-#
-#######################################################
+
+class WrongOutput(Exception):
+    pass
 
 
 def first_modified_latter(first, second):
@@ -41,13 +39,12 @@ class TestSet(object):
 class Program(object):
     """ Abstract program object """
     def __init__(self, source_fn):
-        super(Program, self).__init__()
         if source_fn:
             self.filename = path.abspath(source_fn)
         else:
             raise Exception("Source filename not defined.")
 
-    def run(self, cmd="{bin}", inp="", timeout=None, verbose=True):
+    def run(self, cmd="{bin}", inp="", time_limit=None, mem_limit=None):
         """ Run custom cmd in shell with {bin} as program file name
 
         Return: programs output
@@ -56,14 +53,16 @@ class Program(object):
         will be re-raised after the child process has terminated
         """
         LOG = Log()
-        if verbose:
-            LOG(Log.Msg, ":: Runing")
+        LOG(Log.Msg, ":: Runing")
         cmd = cmd.format(bin=self.exec_file())
         LOG(Log.Vrb, "\trun", cmd)
-        p = Popen([cmd], stdin=PIPE, stdout=PIPE, stderr=STDOUT, shell=True)
-        return p.communicate(inp, timeout)[0]
 
-    def test(self, tests):
+        cmd = ObservedCmd(cmd)
+        cmd.run(inp=inp, time_limit=time_limit, mem_limit=mem_limit)
+        LOG(Log.Msg, "[{0}s, {1}K]".format(cmd.max_time, cmd.max_mem))
+
+    def test(self, tests, run_count=1, mem_limit=None,
+             time_limit=None):
         """ Run program with tests.
 
         Tests should be list of [(<descr>, {in:"<in>", out:"<out>"})]
@@ -76,21 +75,48 @@ class Program(object):
         for descr, tst in tests:
             i += 1
             inp = str(tst["in"]).encode()
-            out = str(tst["out"]).encode()
+            out = str(tst["out"]).rstrip().encode()
 
-            recived = self.run(inp=inp, verbose=False)
+            max_time = 0
+            max_mem = 0
 
-            if recived == out:
-                LOG(Log.Msg, "  {0}: pass: {1},".format(i, descr))
-            else:
-                LOG(Log.Msg, "  {0}: FAIL: {1},".format(i, descr))
+            cmd = ObservedCmd(self.exec_file())
+            try:
+                for _ in range(run_count):
+                    cmd.run(inp=inp, time_limit=time_limit,
+                            mem_limit=mem_limit)
+                    recived = cmd.output[0].rstrip()
+                    if cmd.max_rss > max_mem:
+                        max_mem = cmd.max_rss
+                    if cmd.time > max_time:
+                        max_time = cmd.time
+
+                if recived != out:
+                    raise WrongOutput()
+
+            except WrongOutput:
+                LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
                 LOG(Log.Err, "{0}: error: Test {1} failed."
                              .format(self.source(), descr))
                 LOG(Log.Err, "Expected:\n"
                              "'{0}'\n"
                              "Recived:\n"
                              "'{1}'"
-                             .format(out, recived))
+                             .format(out.decode(), recived.decode()))
+
+            except TimeLimitExceeded:
+                LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
+                LOG(Log.Err, "{0}: error: Time limit {1}s exceeded."
+                    .format(self.source(), time_limit))
+
+            except MemoryLimitExceeded:
+                LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
+                LOG(Log.Err, "{0}: error: Memory limit {1:0.1f}K exceeded."
+                    .format(self.source(), mem_limit / 1024))
+
+            else:
+                LOG(Log.Msg, "  {0}: pass: {1} [{2}s, {3:0.1f}K]"
+                    .format(i, descr, max_time, max_mem / 1024))
 
     def source(self):
         """ Return source filename """
@@ -153,9 +179,11 @@ class CompilingProgram(Program):
             return super(CompilingProgram, self) \
                 .run(cmd, inp, timeout, verbose)
 
-    def test(self, tests):
+    def test(self, tests, run_count=1, mem_limit=None,
+             time_limit=None):
         if self.is_compiled or self.compile():
-            super(CompilingProgram, self).test(tests)
+            super(CompilingProgram, self).test(tests, run_count, mem_limit,
+                                               time_limit)
 
 
 class InterprentingProgram(Program):

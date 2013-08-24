@@ -12,7 +12,7 @@ from Logger import Log
 #######################################################
 
 
-def apply_mask(str, filename):
+def apply_template(str, filename):
     """ Replace {base}, {ext}, {dir} to data. """
     (base, ext) = path.basename(filename).split('.')
     cur_dir = path.abspath(filename)
@@ -31,7 +31,7 @@ class Compiler(object):
         """ Compile file. Result filename can be obitain by bin_file_name() """
         args = self.cmd + " " + ' '.join(self.args)\
             + " " + path.abspath(filename)
-        args = apply_mask(args, filename)
+        args = apply_template(args, filename)
         LOG = Log()
         LOG(Log.Vrb, "\trun", args)
         return call(args, shell=True)
@@ -40,7 +40,7 @@ class Compiler(object):
         self.args += args
 
     def bin_file_name(self, src_filename=""):
-        return apply_mask(self.bin_fn, path.abspath(src_filename))
+        return apply_template(self.bin_fn, path.abspath(src_filename))
 
 #######################################################
 #
