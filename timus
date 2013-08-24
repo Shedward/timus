@@ -7,6 +7,11 @@ from Program import CompilingProgram, TestSet
 from Compiler import GPP
 from Logger import Log
 
+
+def FatalError(*args):
+    print("Error: ", *args)
+    exit()
+
 HELP_MESSAGE = """
 timus [OPTIONS] <action> <filename>
 Use one of the action:
@@ -85,7 +90,7 @@ def main():
         elif p.isdigit():
             opts.mem_limit = float(opts.mem_limit)
         else:
-            raise Exception("Wrong mem limit: "+opts.mem_limit)
+            FatalError("Wrong mem limit: "+opts.mem_limit)
 
         opts.mem_limit = int(round(opts.mem_limit * 1024))  # to bytes
 
@@ -100,6 +105,9 @@ def main():
     # Action
     if len(args) == 2:
         (action, srcfile) = args
+
+        if not path.exists(srcfile):
+            FatalError("Source file '{0}' not found.".format(srcfile))
 
         compiler = GPP()
         prog = CompilingProgram(srcfile, compiler)
@@ -120,15 +128,15 @@ def main():
                           time_limit=opts.time_limit,
                           mem_limit=opts.mem_limit)
             else:
-                Exception("Tests file {0} not found.\n"
-                          "\tMake shure it exists"
-                          " or use option -t to specify it."
-                          .format(testsfn))
+                FatalError("Tests file {0} not found.\n"
+                           "\tMake shure it exists"
+                           " or use option -t to specify it."
+                           .format(testsfn))
 
         else:
-            Exception("Wrong action: "+action)
+            FatalError("Wrong action: "+action)
     else:
-        Exception("Wrong args count.")
+        FatalError("Wrong args count.")
 
 if __name__ == '__main__':
     main()
