@@ -3,8 +3,8 @@
 from optparse import OptionParser
 from os import path
 
-from Program import CompilingProgram, TestSet
-from Compiler import GPP
+from Program import TestSet
+from TimusCompilers import autodetect_program, LANG
 from Logger import Log
 
 
@@ -43,7 +43,7 @@ def main():
     parser.add_option("-f", "--force", action="store_true",
                       dest="force", help="Force recompile.")
 
-    parser.add_option("-l", "--log-lvl", action="store",
+    parser.add_option("--log-lvl", action="store",
                       dest="log_lvl", default="msg",
                       help="Set logging level:\n err - show "
                            "only error messages,\n msg - show "
@@ -74,6 +74,10 @@ def main():
                       dest="run_count", type="int",
                       default=1
                       )
+
+    parser.add_option("-l", "--lang", action="store",
+                      help="Specify compiler/language dialect.",
+                      dest="lang")
 
     (opts, args) = parser.parse_args()
 
@@ -109,21 +113,25 @@ def main():
         if not path.exists(srcfile):
             FatalError("Source file '{0}' not found.".format(srcfile))
 
-        compiler = GPP()
-        prog = CompilingProgram(srcfile, compiler)
+        # Define language
+        if opts.lang is None:
+            prog = autodetect_program(srcfile)
+        else:
+            prog = LANG[opts.lang](srcfile)
 
         if action == "run":
-            prog.run(cmd=opts.cmd)
+            prog.run(cmd=opts.cmd.split(' '))
 
         elif action == "compile":
-            prog.compile()
+            prog.compile(force=opts.force)
 
         elif action == "test":
-            testsfn = srcfile + ".tests"
+            testsfn = path.basename(srcfile) + ".tests"
             if opts.tests is not None:
                 testsfn = opts.tests
             if path.exists(testsfn):
                 tests = TestSet(testsfn)
+                prog.compile(force=opts.force)
                 prog.test(tests, run_count=opts.run_count,
                           time_limit=opts.time_limit,
                           mem_limit=opts.mem_limit)

@@ -18,6 +18,13 @@ def first_modified_latter(first, second):
     return path.getmtime(first) > path.getmtime(second)
 
 
+def format_list(list, **kargs):
+    res = []
+    for item in list:
+        res += [item.format(**kargs)]
+    return res
+
+
 class TestSet(object):
     """ Iterable and indexable wraper for tests file """
     def __init__(self, filename):
@@ -40,13 +47,14 @@ class TestSet(object):
 
 class Program(object):
     """ Abstract program object """
-    def __init__(self, source_fn):
+    def __init__(self, source_fn, run_cmd=["{bin}"]):
         if source_fn:
             self.filename = path.abspath(source_fn)
+            self.run_cmd = run_cmd
         else:
             raise Exception("Source filename not defined.")
 
-    def run(self, cmd="{bin}", inp="", time_limit=None, mem_limit=None):
+    def run(self, cmd=["{bin}"], inp="", time_limit=None, mem_limit=None):
         """ Run custom cmd in shell with {bin} as program file name
 
         Return: programs output
@@ -56,12 +64,15 @@ class Program(object):
         """
         LOG = Log()
         LOG(Log.Msg, ":: Runing")
-        cmd = cmd.format(bin=self.exec_file())
+        cmd = format_list(cmd, bin=self.exec_cmd()[0])
         LOG(Log.Vrb, "\trun", cmd)
 
         cmd = ObservedCmd(cmd)
         cmd.run(inp=inp, time_limit=time_limit, mem_limit=mem_limit)
-        LOG(Log.Msg, "[{0}s, {1}K]".format(cmd.max_time, cmd.max_mem))
+        LOG(Log.Msg, "[{0}s, {1:0.1f}K]".format(cmd.time, cmd.max_rss / 1024))
+
+    def compile(self, *args, **kargs):
+        pass
 
     def test(self, tests, run_count=1, mem_limit=None,
              time_limit=None):
@@ -91,7 +102,8 @@ class Program(object):
             max_time = 0
             max_mem = 0
 
-            cmd = ObservedCmd(self.exec_file())
+            LOG(Log.Vrb, "\t run ", " ".join(self.exec_cmd()))
+            cmd = ObservedCmd(self.exec_cmd())
             try:
                 for _ in range(run_count):
                     if isinstance(stdin, IOBase):
@@ -135,16 +147,16 @@ class Program(object):
         """ Return source filename """
         return self.filename
 
-    def exec_file(self):
-        return self.filename
+    def exec_cmd(self):
+        return format_list(self.run_cmd, bin=self.source())
 
 
 class CompilingProgram(Program):
     """ Compiling program object.
     Using as base for compiling languages programs.
     """
-    def __init__(self, source_fn, compiler=None):
-        super(CompilingProgram, self).__init__(source_fn)
+    def __init__(self, source_fn, compiler=None, run_cmd=["{bin}"]):
+        super(CompilingProgram, self).__init__(source_fn, run_cmd)
         self.compiler = None
         self.bin_fn = ""
         if compiler:
@@ -153,13 +165,14 @@ class CompilingProgram(Program):
             self.is_compiled = path.exists(self.bin_fn) and \
                 first_modified_latter(self.bin_fn, self.source())
 
-    def exec_file(self):
-        return self.bin_fn
+    def exec_cmd(self):
+        return format_list(self.run_cmd, bin=self.bin_fn)
 
     def compile(self, force=False, compiler=None):
         """ Compile program from source file if it modified """
         if compiler is None:
                 compiler = self.compiler
+
         LOG = Log()
         LOG(Log.Msg, ":: Compiling")
         if not force and path.exists(self.bin_fn)\
@@ -170,8 +183,10 @@ class CompilingProgram(Program):
             if compiler is None:
                 raise Exception("Compiler not defined")
             else:
-                res = compiler.run(self.source())
+
+                res = compiler.compile(self.source())
                 self.is_compiled = res == 0
+
                 if self.is_compiled:
                     LOG(Log.Msg, "\tOK.")
                     self.bin_fn = compiler.bin_file_name(self.source())
@@ -180,27 +195,14 @@ class CompilingProgram(Program):
                     exit()
         return self.is_compiled
 
-    def run(self, cmd="{bin}", inp="", timeout=None, verbose=True):
-        """ Run custom cmd in shell with {bin} as program file name
-
-        Return: programs output
-            If the timeout expires, the child process will be killed
-        and then waited for again. The TimeoutExpired exception
-        will be re-raised after the child process has terminated
-        """
+    def run(self, cmd=["{bin}"], inp=None, time_limit=None, mem_limit=None):
         if self.is_compiled or self.compile():
             return super(CompilingProgram, self) \
-                .run(cmd, inp, timeout, verbose)
+                .run(cmd=cmd, inp=inp, time_limit=time_limit,
+                     mem_limit=mem_limit)
 
     def test(self, tests, run_count=1, mem_limit=None,
              time_limit=None):
         if self.is_compiled or self.compile():
             super(CompilingProgram, self).test(tests, run_count, mem_limit,
                                                time_limit)
-
-
-class InterprentingProgram(Program):
-    """docstring for InterprentProgram"""
-    def __init__(self, arg):
-        super(InterprentingProgram, self).__init__()
-        self.arg = arg
