@@ -6,7 +6,8 @@ Little timus client with simple input/output testing tool.
 Now it's just cpp programs testing tool.
 Lines commented with '//' is not realize yet.
 
-To try just clone or download and extract and type `./timus test example.cpp`
+To try just clone or download and extract 
+and type `../timus test example.cpp` in example dir.
 
 Requirements
 ------------
