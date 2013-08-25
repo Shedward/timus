@@ -3,7 +3,7 @@ timus
 
 Little timus client with simple input/output testing tool.
 
-Now it's just cpp programs testing tool.
+Now it's just programs testing tool.
 Lines commented with '//' is not realize yet.
 
 To try just clone or download and extract 
@@ -16,32 +16,50 @@ Requirements
 - psutil - python package using for benchmark measurements.
 - yaml - python package using for parsing tests files.
 - Any timus supported compiler/interpreter:
-	- // Visual C 2010
-	- // Visual C++ 2010
-	- // GCC 4.7.2
+	- Visual C 2010
+	- Visual C++ 2010
+	- GCC 4.7.2
 	- G++ 4.7.2
-	- // FreePascal 2.0.4
-	- // Visual C# 2012
-	- // Java 1.7
-	- // Go 1.1
-	- // Python 2.7.3
-	- // Python 3.3.0
-	- // GHC 7.6.1
-	- // Ruby 1.9.3
+	- FreePascal 2.0.4
+	- Visual C# 2012
+	- Java 1.7
+	- Go 1.1
+	- Python 2.7.3
+	- Python 3.3.0
+	- GHC 7.6.1
+	- Ruby 1.9.3
 
 Usage
 -----
 
+    Usage: 
     timus [OPTIONS] <action> <filename>
     Use one of the action:
         run     - Run program using by default pattern "konsole --hold -e {bin}"
                   where {bin} is name of executable file.
-                  Use -c to change pattern.
-        compile - Compile source file.
+                  Use -c to change patern.
+        compile - Compile source file. With interpret languages do nothing.
                   Use -f to force recompile.
         test    - Test program. Searching for <source>.tests by default.
                   Use -t to specify tests file.
 
+
+    List of compilers/interpreters for -l option:
+        cl    - Visual C 2010
+        cl++  - Visual C 2010
+        gcc   - GCC 4.7.2
+        gcc11 - GCC 4.7.2 with C11
+        g++   - G++ 4.7.2
+        g++11 - G++ 4.7.2 with C++11
+        pas   - FreePascal 2.4.0
+        ghc   - Haskell 7.6.1
+        go    - Go 1.7
+        c#    - Visual C#
+        mono  - Mono 3.0.7
+        java  - Java 1.7
+        py2   - Python 2.7
+        py3   - Python 3.3
+        rb    - Ruby 1.9.3
 
 
     Options:
@@ -51,8 +69,7 @@ Usage
                             <source_file>.tests.
       -r CMD, --run=CMD     Specify pattern for 'run' action
       -f, --force           Force recompile.
-      -l LOG_LVL, --log-lvl=LOG_LVL
-                            Set logging level:  err - show only error messages,
+      --log-lvl=LOG_LVL     Set logging level:  err - show only error messages,
                             msg - show basic messages (default),  vrb - show every
                             execute command
       --time-limit=TIME_LIMIT
@@ -65,14 +82,15 @@ Usage
                             limit it will be terminated with 'Memory limit
                             exceeded' error. Using in test action.
       -c RUN_COUNT, --run-count=RUN_COUNT
-                            Specify amount of running. More runs, the more accurate
+                            Specify amount of runing. More runs, the more accurate
                             the measurements
+      -l LANG, --lang=LANG  Specify compiler/language dialect.
 
 ###Examples:
 ####Local:
 `timus compile source.cpp` - run gcc compiler (chosen by extension of sourcefile). [it's suport gcc only yet]
 
-// `timus compile source.cpp -lCL++` - compile using cl instead of gcc.
+`timus compile source.cpp -lcl++` - compile using cl instead of gcc.
 
 `timus run -c'gnome-terminal -e {bin}' source` - run program in gnome-terminal, recompile if needed.
 
