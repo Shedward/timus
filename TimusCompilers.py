@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from Compiler import Compiler, apply_template
 from Program import Program, CompilingProgram
 from Logger import Log

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from os import path
 import yaml
 from subprocess import PIPE

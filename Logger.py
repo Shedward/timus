@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-
 class Singleton(type):
     def __init__(cls, name, bases, dict):
         super(Singleton, cls).__init__(name, bases, dict)
