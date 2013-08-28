@@ -13,8 +13,8 @@ Requirements
 ------------
 
 - Python 3.3
-- psutil - python package using for benchmark measurements.
-- yaml - python package using for parsing tests files.
+- python3-psutil - python package using for benchmark measurements.
+- python3-yaml - python package using for parsing tests files.
 - Any timus supported compiler/interpreter:
 	- Visual C 2010
 	- Visual C++ 2010
