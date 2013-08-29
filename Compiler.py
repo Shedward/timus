@@ -4,8 +4,8 @@ from subprocess import call
 from Logger import Log
 
 
-def apply_template(str, filename):
-    """ Replace {base}, {ext}, {dir} to data. """
+def substitute(str, filename):
+    """ Replace {base}, {ext}, {dir} to basename, extension and dir of file """
     (base, ext) = path.basename(filename).split('.')
     cur_dir = path.abspath(filename)
     return str.format(base=base, ext=ext, dir=cur_dir)
@@ -22,7 +22,7 @@ class Compiler(object):
     def compile(self, filename):
         """ Compile file. Result filename can be obitain by bin_file_name() """
         args = self.cmd + " " + self.args
-        args = apply_template(args, filename)
+        args = substitute(args, filename)
         LOG = Log()
         LOG(Log.Vrb, "\trun", args)
         return call(args, shell=True)
@@ -31,4 +31,4 @@ class Compiler(object):
         self.args += " " + args
 
     def bin_file_name(self, src_filename=""):
-        return apply_template(self.bin_fn, path.abspath(src_filename))
+        return substitute(self.bin_fn, path.abspath(src_filename))
