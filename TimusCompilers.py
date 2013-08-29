@@ -199,6 +199,27 @@ class rubyProgram(Program):
     def __init__(self, sourcefn):
         super(rubyProgram, self).__init__(source_fn=sourcefn,
                                           run_cmd=["ruby", "{bin}"])
+
+class scalac(Compiler):
+    """Javac"""
+    def __init__(self):
+        super(scalac, self).__init__("scalac", "{base}")
+        self.add_args(r"-optimise -feature {base}.{ext}")
+
+    def bin_file_name(self, src_filename=""):
+        return apply_template("{base}", src_filename)
+
+
+class scalaProgram(CompilingProgram):
+    def __init__(self, sourcefn):
+        super(scalaProgram, self).__init__(source_fn=sourcefn,
+                                          compiler=scalac(),
+                                          run_cmd=["java", "-Xmx544m",
+                                                   "-Xss64m", "-DONLINE_JUDGE",
+                                                   "-classpath",
+                                                   ".;scala-library.jar",
+                                                   "{bin}"])
+
 LANG = {
     "cl": clProgram,
     "cl++": clppProgram,
@@ -214,7 +235,8 @@ LANG = {
     "java": javaProgram,
     "py2": py2Program,
     "py3": py3Program,
-    "rb": rubyProgram
+    "rb": rubyProgram,
+    "scala": scalaProgram
 }
 
 EXT = {
@@ -226,7 +248,8 @@ EXT = {
     "go": "go",
     "hs": "ghc",
     "rb": "rb",
-    "cs": ("mono", "c#")
+    "cs": ("mono", "c#"),
+    "scala": "scala"
 }
 
 
