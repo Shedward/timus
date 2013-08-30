@@ -1,4 +1,4 @@
-from Compiler import Compiler, apply_template
+from Compiler import Compiler, substitute
 from Program import Program, CompilingProgram
 from Logger import Log
 
@@ -171,7 +171,7 @@ class JAVAC(Compiler):
         self.add_args(r"{base}.{ext}")
 
     def bin_file_name(self, src_filename=""):
-        return apply_template("{base}", src_filename)
+        return substitute("{base}", src_filename)
 
 
 class javaProgram(CompilingProgram):
@@ -207,7 +207,7 @@ class scalac(Compiler):
         self.add_args(r"-optimise -feature {base}.{ext}")
 
     def bin_file_name(self, src_filename=""):
-        return apply_template("{base}", src_filename)
+        return substitute("{base}", src_filename)
 
 
 class scalaProgram(CompilingProgram):
