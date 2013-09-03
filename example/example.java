@@ -12,7 +12,7 @@ public class example
 		{
 			while (true)
 			{
-				x = in.nextInt()
+				x = in.nextInt();
 				sum += x;
 			}
 		} catch (NoSuchElementException e) {
