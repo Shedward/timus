@@ -2,6 +2,8 @@ from Compiler import Compiler, substitute
 from Program import Program, CompilingProgram
 from Logger import Log
 
+from os import path
+from sys import exit
 
 class CL(Compiler):
     """Visual C 2010"""
@@ -240,8 +242,8 @@ LANG = {
 }
 
 EXT = {
-    "cpp": ("g++", "cl++"),
-    "c": ("gcc", "cl"),
+    "cpp": ("g++", "cl++","g++11"),
+    "c": ("gcc", "cl", "gcc11"),
     "pas": "pas",
     "py": ("py3", "py2"),
     "java": "java",
@@ -253,22 +255,23 @@ EXT = {
 }
 
 
-def autodetect_program(filename):
-    base, ext = filename.split('.')
+def autodetect_lang(filename):
+    base, ext = path.splitext(filename)
+    if ext != '':
+        ext = ext[1:] # remove leading dot
+    LOG = Log()
     if ext in EXT:
         lang = EXT[ext]
-        program = None
         if isinstance(lang, str):
-            program = LANG[lang]
+            return lang
         elif isinstance(lang, tuple):
-            LOG = Log()
             LOG(Log.Msg, "Warning: Suported {0}, used {1} by default."
                          .format(lang, lang[0]))
-            program = LANG[lang[0]]
+            return lang[0]
         else:
-            LOG(Log.Msg, "Wrong program type {0}".format(type(lang)))
-        return program(filename)
-
+            LOG(Log.Err, "Wrong lang type {0}".format(type(lang)))
     else:
-        LOG(Log.Err, "Filetype {0} not suported.".format(ext))
-        exit()
+        LOG(Log.Err, "Not suported extension '{0}'".format(ext))
+
+def autodetect_program(filename):
+    return LANG[autodetect_lang(filename)](filename)
