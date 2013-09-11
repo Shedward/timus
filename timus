@@ -143,7 +143,7 @@ def main():
             prog.compile(force=opts.force)
 
         elif action == "test":
-            testsfn = path.basename(srcfile).split('.')[0] + ".tests"
+            testsfn = path.splitext(srcfile)[0] + ".tests"
             if opts.tests is not None:
                 testsfn = opts.tests
             if path.exists(testsfn):
