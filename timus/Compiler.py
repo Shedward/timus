@@ -6,7 +6,9 @@ from timus.Logger import Log
 
 def substitute(str, filename):
     """ Replace {base}, {ext}, {dir} to basename, extension and dir of file """
-    (base, ext) = path.basename(filename).split('.')
+    (base, ext) = path.splitext(path.basename(filename))
+    if ext != '':
+        ext = ext[1:] # remove dot
     cur_dir = path.dirname(filename)
     return str.format(base=base, ext=ext, dir=cur_dir)
 
