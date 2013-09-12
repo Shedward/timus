@@ -7,7 +7,7 @@ from timus.Logger import Log
 def substitute(str, filename):
     """ Replace {base}, {ext}, {dir} to basename, extension and dir of file """
     (base, ext) = path.basename(filename).split('.')
-    cur_dir = path.abspath(filename)
+    cur_dir = path.dirname(filename)
     return str.format(base=base, ext=ext, dir=cur_dir)
 
 
