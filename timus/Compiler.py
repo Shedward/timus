@@ -1,7 +1,7 @@
 from os import path
 from subprocess import call
 
-from Logger import Log
+from timus.Logger import Log
 
 
 def substitute(str, filename):

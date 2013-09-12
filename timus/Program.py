@@ -3,8 +3,8 @@ import yaml
 from subprocess import PIPE
 from io import IOBase
 
-from Observed import ObservedCmd, TimeLimitExceeded, MemoryLimitExceeded
-from Logger import Log
+from timus.Observed import ObservedCmd, TimeLimitExceeded, MemoryLimitExceeded
+from timus.Logger import Log
 
 
 class WrongOutput(Exception):

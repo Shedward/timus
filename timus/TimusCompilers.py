@@ -1,6 +1,6 @@
-from Compiler import Compiler, substitute
-from Program import Program, CompilingProgram
-from Logger import Log
+from timus.Compiler import Compiler, substitute
+from timus.Program import Program, CompilingProgram
+from timus.Logger import Log
 
 from os import path
 from sys import exit

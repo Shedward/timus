@@ -3,9 +3,9 @@
 from optparse import OptionParser
 from os import path
 
-from Program import TestSet
-from TimusCompilers import autodetect_program, LANG
-from Logger import Log
+from timus.Program import TestSet
+from timus.TimusCompilers import autodetect_program, LANG
+from timus.Logger import Log
 
 
 def FatalError(*args):
