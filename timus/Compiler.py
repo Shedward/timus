@@ -32,5 +32,5 @@ class Compiler(object):
     def add_args(self, args):
         self.args += " " + args
 
-    def bin_file_name(self, src_filename=""):
+    def bin_file_name(self, src_filename):
         return substitute(self.bin_fn, path.abspath(src_filename))
