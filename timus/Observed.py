@@ -2,7 +2,9 @@ from subprocess import PIPE, STDOUT
 
 import psutil
 import threading
+from time import sleep
 
+SLEEP = 0.2
 
 class TimeLimitExceeded(Exception):
     """Rises when observed process exceed said time limit"""
@@ -30,6 +32,7 @@ class ObservedCmd(object):
                                     stderr=stderr)
 
         def do():
+            sleep(SLEEP)
             self.output = self.process.communicate(input=inp)
 
         thread = threading.Thread(target=do)
@@ -47,7 +50,7 @@ class ObservedCmd(object):
                     self.process.terminate()
                     raise MemoryLimitExceeded()
 
-                if time_limit is not None and self.time > time_limit:
+                if time_limit is not None and self.time - SLEEP > time_limit:
                     self.process.terminate()
                     raise TimeLimitExceeded
 
