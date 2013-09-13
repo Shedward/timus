@@ -13,7 +13,7 @@ setup(
 	long_description=open(join(dirname(__file__), 'README.md')).read(),
 	license=open(join(dirname(__file__),"LICENSE")).read(),
 	scripts=['bin/timus'],
-	test_suite='timus.test',
+	test_suite='tests',
 	install_requires=[
 		'psutil >= 0.6.1',
 		'PyYAML >= 3.10'
