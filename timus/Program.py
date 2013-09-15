@@ -27,7 +27,8 @@ class TestSet(object):
     """ Iterable and indexable wraper for tests file """
     def __init__(self, filename):
         super(TestSet, self).__init__()
-        bare_tests = yaml.load(open(filename))
+        with open(filename) as f:
+            bare_tests = yaml.load(f)
         tests = []
         for bare_test in bare_tests:
             tests += bare_test.items()
