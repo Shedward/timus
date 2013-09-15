@@ -2,7 +2,7 @@ import unittest
 from os import remove
 from time import sleep
 
-from pkg_resources import resource_filename
+import pkg_resources
 
 from timus import Program
 
@@ -30,4 +30,12 @@ class TestFormatList(unittest.TestCase):
 			 "{one}.{two}"]
 		res = Program.format_list(l, one='1', two='2')
 		self.assertEqual(res, ["2","1","None","1.2"])
+
+class TestTestSet(unittest.TestCase):
+	def test_testset(self):
+		examplefn = pkg_resources.resource_filename('examples','example.tests')
+		testset = Program.TestSet(examplefn)
+		self.assertEqual(testset[0][1]['in'], '2 2')
+		self.assertEqual(testset[4][0], 'Bignum')
+		self.assertEqual(testset[-1][1]['out'], 499999500000)
 
