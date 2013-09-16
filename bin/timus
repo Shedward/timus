@@ -2,7 +2,7 @@
 
 from sys import argv
 
-from timus.TimusApplication import main
+from timus.Timus import main
 
 if __name__ == '__main__':
 	main(argv)
