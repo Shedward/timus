@@ -254,6 +254,11 @@ EXT = {
     "scala": "scala"
 }
 
+class WrongLang(Exception):
+    pass
+
+class NotSupportedExt(Exception):
+    pass
 
 def autodetect_lang(filename):
     base, ext = path.splitext(filename)
@@ -269,9 +274,13 @@ def autodetect_lang(filename):
                          .format(lang, lang[0]))
             return lang[0]
         else:
-            LOG(Log.Err, "Wrong lang type {0}".format(type(lang)))
+            raise Exception(type(lang))
     else:
-        LOG(Log.Err, "Not suported extension '{0}'".format(ext))
+        raise NotSupportedExt(ext)
 
 def autodetect_program(filename):
-    return LANG[autodetect_lang(filename)](filename)
+    lang = autodetect_lang(filename)
+    if lang in LANG:
+        return LANG[lang](filename)
+    else:
+        raise WrongLang(lang)
