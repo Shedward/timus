@@ -37,5 +37,5 @@ class TestTestSet(unittest.TestCase):
 		testset = Program.TestSet(examplefn)
 		self.assertEqual(testset[0][1]['in'], '2 2')
 		self.assertEqual(testset[4][0], 'Bignum')
-		self.assertEqual(testset[-1][1]['out'], 499999500000)
+		self.assertEqual(testset[-1][1]['out'], 55)
 
