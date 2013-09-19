@@ -2,7 +2,6 @@
 from optparse import OptionParser
 from os import path
 
-from timus.Program import TestSet
 from timus.TimusCompilers import autodetect_program, LANG
 from timus.Logger import Log
 from timus.RetCodes import RetCode
