@@ -71,7 +71,7 @@ class Program(object):
         LOG(Log.Msg, "[{0}s, {1:0.1f}K]".format(cmd.time, cmd.max_rss / 1024))
 
     def compile(self, *args, **kargs):
-        pass
+        True
 
     def test(self, tests, run_count=1, mem_limit=None,
              time_limit=None):
@@ -191,7 +191,7 @@ class CompilingProgram(Program):
                     self.bin_fn = compiler.bin_file_name(self.source())
                 else:
                     LOG(Log.Msg, "\tFailed.")
-                    exit()
+
         return self.is_compiled
 
     def run(self, cmd=["{bin}"], inp=None, time_limit=None, mem_limit=None):
