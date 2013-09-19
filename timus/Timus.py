@@ -36,6 +36,9 @@ List of compilers/interpreters for -l option:
 
 """
 
+class CompilationError(Exception):
+	pass
+
 class SourceFileNotFound(Exception):
 	pass
 
@@ -101,7 +104,7 @@ def main(argv):
 		help="Specify compiler/language dialect.",
 		dest="lang")
 
-	(opts, args) = parser.parse_args()
+	(opts, args) = parser.parse_args(argv)
 
 	# Convert mem limit to KB if needed.
 	if opts.mem_limit is not None:
@@ -128,12 +131,14 @@ def main(argv):
 	}
 	Log(LOG_LVL_OPTS[opts.log_lvl])
 
+	ret = 256 # Unknown error
+
 	# Action
 	if len(args) == 2:
 		(action, srcfile) = args
 
 		if not path.exists(srcfile):
-			raise SourceFileNotFound(format(srcfile))
+			raise SourceFileNotFound(srcfile)
 
 		# Define language
 		if opts.lang is None:
@@ -142,24 +147,28 @@ def main(argv):
 			prog = LANG[opts.lang](srcfile)
 
 		if action == "run":
-			prog.run(cmd=opts.cmd.split(' '))
+			ret = prog.run(cmd=opts.cmd.split(' '))
 
 		elif action == "compile":
-			prog.compile(force=opts.force)
+			ret = prog.compile(force=opts.force)
 
 		elif action == "test":
 			testsfn = path.splitext(srcfile)[0] + ".tests"
 			if opts.tests is not None:
 				testsfn = opts.tests
-				if path.exists(testsfn):
-					tests = TestSet(testsfn)
-					prog.compile(force=opts.force)
-					prog.test(tests, run_count=opts.run_count,
+			if path.exists(testsfn):
+				tests = TestSet(testsfn)
+				if (prog.compile(force=opts.force)):
+					ret = prog.test(tests, run_count=opts.run_count,
 							  time_limit=opts.time_limit,
 							  mem_limit=opts.mem_limit)
 				else:
-					raise TestFileNotFound(testsfn)
+					raise CompilationError(ret)
+			else:
+				raise TestFileNotFound(testsfn)
 		else:
 			raise WrongParams("Wrong action: "+action)
 	else:
-		raise WrongParams("Wrong args count.")
+		raise WrongParams("Wrong args count:",len(args))
+
+	return ret
