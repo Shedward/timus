@@ -13,7 +13,7 @@ class CL(Compiler):
                       r"/D \"_CRT_SECURE_NO_WARNINGS\" "
                       r"/D \"_CRT_SECURE_NO_DEPRECATE\" "
                       r"/D \"ONLINE_JUDGE\" "
-                      r"{base}.{ext}")
+                      r"{file}")
 
 
 class clProgram(CompilingProgram):
@@ -29,7 +29,7 @@ class CLPP(Compiler):
                       r"/D \"_CRT_SECURE_NO_WARNINGS\" "
                       r"/D \"_CRT_SECURE_NO_DEPRECATE\" "
                       r"/D \"ONLINE_JUDGE\" "
-                      r"{base}.{ext}")
+                      r"{file}")
 
 
 class clppProgram(CompilingProgram):
@@ -43,7 +43,7 @@ class GCC(Compiler):
         super(GCC, self).__init__("gcc", "{base}")
         self.add_args(r"-static -fno-strict-aliasing "
                       r"-DONLINE_JUDGE -lm -s "
-                      r"-o {base} {base}.{ext}")
+                      r"-o {base} {file}")
 
 
 class gccProgram(CompilingProgram):
@@ -57,7 +57,7 @@ class GCC11(Compiler):
         super(GCC11, self).__init__("gcc", "{base}")
         self.add_args(r"-static -fno-strict-aliasing "
                       r"-DONLINE_JUDGE -lm -s -std=c11 -O2 "
-                      r"-o {base} {base}.{ext}")
+                      r"-o {base} {file}")
 
 
 class gcc11Program(CompilingProgram):
@@ -72,7 +72,7 @@ class GPP(Compiler):
         super(GPP, self).__init__("g++", "{base}")
         self.add_args(r"-static -fno-strict-aliasing "
                       r"-DONLINE_JUDGE -lm -s -x c++ -O2 "
-                      r"-o {base} {base}.{ext}")
+                      r"-o {base} {file}")
 
 
 class gppProgram(CompilingProgram):
@@ -86,7 +86,7 @@ class GPP11(Compiler):
         super(GPP11, self).__init__("g++", "{base}")
         self.add_args(r"-static -fno-strict-aliasing "
                       r"-DONLINE_JUDGE -lm -s -x c++ -std=c11 -O2 "
-                      r"-o {base} {base}.{ext}")
+                      r"-o {base} {file}")
 
 
 class gpp11Program(CompilingProgram):
@@ -99,7 +99,7 @@ class FreePascal(Compiler):
     """FreePascal 2.0.4"""
     def __init__(self):
         super(FreePascal, self).__init__("ppc386", "{base}")
-        self.add_args(r"{base}.{ext} -Ci-o-r-t- -Xs "
+        self.add_args(r"{file} -Ci-o-r-t- -Xs "
                       r"-Sdgich -Se10 -l- -vwnh -dONLINE_JUDGE")
 
 
@@ -113,7 +113,7 @@ class GHC(Compiler):
     """GHC 7.6.1"""
     def __init__(self):
         super(GHC, self).__init__("ghc", "{base}")
-        self.add_args(r"-v0 -O {base}.{ext}")
+        self.add_args(r"-v0 -O {file}")
 
 
 class hsProgram(CompilingProgram):
@@ -126,7 +126,7 @@ class GO(Compiler):
     """Go 1.1"""
     def __init__(self):
         super(GO, self).__init__("go", "{base}")
-        self.add_args(r"build {base}.{ext}")
+        self.add_args(r"build {file}")
 
 
 class goProgram(CompilingProgram):
@@ -141,7 +141,7 @@ class MCS(Compiler):
         super(MCS, self).__init__("mcs", "{base}.exe")
         self.add_args(r"/o+ /d:ONLINE_JUDGE "
                       r"/r:System.Numerics.dll "
-                      r"{base}.{ext}")
+                      r"{file}")
 
 
 class monoProgram(CompilingProgram):
@@ -157,7 +157,7 @@ class CSC(Compiler):
         super(CSC, self).__init__("csc", "{base}.exe")
         self.add_args(r"/o+ /d:ONLINE_JUDGE "
                       r"/r:System.Numerics.dll "
-                      r"{base}.{ext}")
+                      r"{file}")
 
 
 class cscProgram(CompilingProgram):
@@ -170,7 +170,7 @@ class JAVAC(Compiler):
     """Javac"""
     def __init__(self):
         super(JAVAC, self).__init__("javac", "{base}")
-        self.add_args(r"{base}.{ext}")
+        self.add_args(r"{file}")
 
     def bin_file_name(self, src_filename=""):
         return substitute("{base}", src_filename)
@@ -206,7 +206,7 @@ class scalac(Compiler):
     """Javac"""
     def __init__(self):
         super(scalac, self).__init__("scalac", "{base}")
-        self.add_args(r"-optimise -feature {base}.{ext}")
+        self.add_args(r"-optimise -feature {file}")
 
     def bin_file_name(self, src_filename=""):
         return substitute("{base}", src_filename)
