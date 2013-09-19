@@ -9,12 +9,17 @@ Lines commented with '//' is not realize yet.
 Installation
 ------------
 It's now in alpha state but if you want to try:
+
     git clone https://github.com/Shedward/timus.git #(or download archive and unpack)
     cd ./timus
     python3 setup.py test
+
 if it's OK, you can install it:
+
     python3 setup.py install
+
 then you can try testing examples in dir:
+
     cd ./examples/
     timus test example.cpp
 
