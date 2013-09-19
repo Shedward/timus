@@ -157,9 +157,8 @@ def main(argv):
 			if opts.tests is not None:
 				testsfn = opts.tests
 			if path.exists(testsfn):
-				tests = TestSet(testsfn)
 				if (prog.compile(force=opts.force)):
-					ret = prog.test(tests, run_count=opts.run_count,
+					ret = prog.test(testsfn, run_count=opts.run_count,
 							  time_limit=opts.time_limit,
 							  mem_limit=opts.mem_limit)
 				else:

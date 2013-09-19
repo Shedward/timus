@@ -73,7 +73,7 @@ class Program(object):
     def compile(self, *args, **kargs):
         True
 
-    def test(self, tests, run_count=1, mem_limit=None,
+    def test(self, tests_file, run_count=1, mem_limit=None,
              time_limit=None):
         """ Run program with tests.
 
@@ -84,6 +84,7 @@ class Program(object):
         LOG = Log()
         LOG(Log.Msg, ":: Testing")
         i = 0
+        tests = TestSet(tests_file)
         for descr, tst in tests:
             i += 1
 
@@ -92,7 +93,9 @@ class Program(object):
                 stdin = PIPE
             elif "in file" in tst:
                 inp = None
-                stdin = open(tst["in file"])
+                tests_dir = path.dirname(path.abspath(tests_file))
+                ext_test_fn = path.join(tests_dir, tst["in file"])
+                stdin = open(ext_test_fn)
             else:
                 LOG(Log.Err, "No input in test", descr)
 
