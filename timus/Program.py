@@ -5,6 +5,7 @@ from io import IOBase
 
 from timus.Observed import ObservedCmd, TimeLimitExceeded, MemoryLimitExceeded
 from timus.Logger import Log
+from timus.RetCodes import RetCode
 
 
 class WrongOutput(Exception):
@@ -84,6 +85,7 @@ class Program(object):
         LOG = Log()
         LOG(Log.Msg, ":: Testing")
         i = 0
+        ret = RetCode.Ok
         tests = TestSet(tests_file)
         for descr, tst in tests:
             i += 1
@@ -130,20 +132,24 @@ class Program(object):
                              "Recived:\n"
                              "'{1}'"
                              .format(out.decode(), recived.decode()))
+                ret = RetCode.WrongOutput
 
             except TimeLimitExceeded:
                 LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
                 LOG(Log.Err, "{0}: error: Time limit {1}s exceeded."
                     .format(self.source(), time_limit))
+                ret = RetCode.TimeLimitExceeded
 
             except MemoryLimitExceeded:
                 LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
                 LOG(Log.Err, "{0}: error: Memory limit {1:0.1f}K exceeded."
                     .format(self.source(), mem_limit / 1024))
+                ret = RetCode.MemoryLimitExceeded
 
             else:
                 LOG(Log.Msg, "  {0}: pass: {1} [{2}s, {3:0.1f}K]"
                     .format(i, descr, max_time, max_mem / 1024))
+        return ret
 
     def source(self):
         """ Return source filename """
@@ -206,5 +212,5 @@ class CompilingProgram(Program):
     def test(self, tests, run_count=1, mem_limit=None,
              time_limit=None):
         if self.is_compiled or self.compile():
-            super(CompilingProgram, self).test(tests, run_count, mem_limit,
+            return super(CompilingProgram, self).test(tests, run_count, mem_limit,
                                                time_limit)

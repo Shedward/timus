@@ -6,7 +6,7 @@ from timus import Timus
 class TestTimus(unittest.TestCase):
 	def test_timus(self):
 		fn = pkg_resources.resource_filename('examples','example.cpp')
-		self.assertEqual(Timus.main(['test', fn, '--ll=vrb']), 0)
+		self.assertEqual(Timus.main(['test', fn]), 0)
 
 	def test_timus_wrong_params(self):
 		self.assertRaises(Timus.WrongParams, 

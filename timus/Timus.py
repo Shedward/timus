@@ -5,6 +5,7 @@ from os import path
 from timus.Program import TestSet
 from timus.TimusCompilers import autodetect_program, LANG
 from timus.Logger import Log
+from timus.RetCodes import RetCode
 
 HELP_MESSAGE = """
 timus [OPTIONS] <action> <filename>
@@ -131,7 +132,7 @@ def main(argv):
 	}
 	Log(LOG_LVL_OPTS[opts.log_lvl])
 
-	ret = 256 # Unknown error
+	ret = RetCode.UnknownError # Unknown error
 
 	# Action
 	if len(args) == 2:

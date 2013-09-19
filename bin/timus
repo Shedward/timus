@@ -5,4 +5,4 @@ from sys import argv
 from timus.Timus import main
 
 if __name__ == '__main__':
-	main(argv[1:])
+	return main(argv[1:])
