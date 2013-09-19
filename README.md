@@ -6,8 +6,24 @@ Little timus client with simple input/output testing tool.
 Now it's just programs testing tool.
 Lines commented with '//' is not realize yet.
 
-To try just clone or download and extract 
-and type `../timus test example.cpp` in example dir.
+Installation
+------------
+It's now in alpha state but if you want to try:
+    git clone https://github.com/Shedward/timus.git #(or download archive and unpack)
+    cd ./timus
+    python3 setup.py test
+if it's OK, you can install it:
+    python3 setup.py install
+then you can try testing examples in dir:
+    cd ./examples/
+    timus test example.cpp
+
+Troubleshooting.
+----------------
+If you see error 'Compillation error' it may mean that you don't have installed gcc, used in test, timus won't need gcc to work, it's only mean than you can't compile and test your cpp program local with gcc.
+
+
+If you see error 'Python.h not found' it may mean that you don't have installed pyhon3-dev package for compiling psutil, also you can install psutil manualy using your package manager.
 
 Requirements
 ------------
@@ -35,10 +51,10 @@ Usage
     Usage: 
     timus [OPTIONS] <action> <filename>
     Use one of the action:
-        run     - Run program using by default pattern "konsole --hold -e {bin}"
+        run     - Run program using by default pattern "$TERM -e {bin}"
                   where {bin} is name of executable file.
                   Use -c to change patern.
-        compile - Compile source file. With interpret languages do nothing.
+        compile - Compile source file. For interpret languages do nothing.
                   Use -f to force recompile.
         test    - Test program. Searching for <source>.tests by default.
                   Use -t to specify tests file.
@@ -88,9 +104,9 @@ Usage
 
 ###Examples:
 ####Local:
-`timus compile source.cpp` - run gcc compiler (chosen by extension of sourcefile). [it's suport gcc only yet]
+`timus compile source.cpp` - run gcc compiler (chosen by extension of sourcefile).
 
-`timus compile source.cpp -lcl++` - compile using cl instead of gcc.
+`timus compile source.cpp -lcl++ -f` - recompile using cl instead of gcc.
 
 `timus run -c'gnome-terminal -e {bin}' source` - run program in gnome-terminal, recompile if needed.
 
@@ -140,5 +156,5 @@ For multiline use |:
 Also you can use external file if input is too big for tests file:
 
     - Many numbers:
-        in file: 1 to 999999.txt
-        out: 1783293664
+        in file: 1 to 10.txt
+        out: 55

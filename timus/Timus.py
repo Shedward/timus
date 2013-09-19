@@ -10,7 +10,7 @@ from timus.RetCodes import RetCode
 HELP_MESSAGE = """
 timus [OPTIONS] <action> <filename>
 Use one of the action:
-    run	    - Run program using by default pattern "konsole --hold -e {bin}"
+    run	    - Run program using by default pattern "$TERM -e {bin}"
               where {bin} is name of executable file.
               Use -c to change patern.
     compile - Compile source file. With interpret languages do nothing.
