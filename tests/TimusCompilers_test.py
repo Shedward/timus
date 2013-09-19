@@ -1,9 +1,16 @@
 import unittest
+import pkg_resources
+from os import path, chdir
 
 import timus.TimusCompilers as TimusCmp 
 
 
 class TestAutodetect(unittest.TestCase):
+	def setUp(self):
+		filename = pkg_resources.resource_filename('examples', 'example.cpp')
+		file_dir = path.dirname(path.abspath(filename))
+		chdir(file_dir)
+
 	def test_autodetect_lang(self):
 		self.assertEqual(TimusCmp.autodetect_lang("example.cpp"), "g++")
 		self.assertEqual(TimusCmp.autodetect_lang("example.c"), "gcc")
