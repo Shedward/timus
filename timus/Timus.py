@@ -159,8 +159,8 @@ def main(argv):
 			if path.exists(testsfn):
 				if (prog.compile(force=opts.force)):
 					ret = prog.test(testsfn, run_count=opts.run_count,
-							  time_limit=opts.time_limit,
-							  mem_limit=opts.mem_limit)
+					                time_limit=opts.time_limit,
+					                mem_limit=opts.mem_limit)
 				else:
 					raise CompilationError(ret)
 			else:
