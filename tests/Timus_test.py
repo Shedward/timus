@@ -8,6 +8,8 @@ class TestTimus(unittest.TestCase):
 	def test_timus(self):
 		fn = pkg_resources.resource_filename('examples','example.cpp')
 		self.assertEqual(Timus.main(['test', fn, '-f']), RetCode.WrongOutput)
+		fn = pkg_resources.resource_filename('examples','example.py')
+		self.assertEqual(Timus.main(['test', fn, '-f']), RetCode.WrongOutput)
 
 	def test_timus_wrong_params(self):
 		self.assertRaises(Timus.WrongParams, 

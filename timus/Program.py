@@ -72,7 +72,7 @@ class Program(object):
 		LOG(Log.Msg, "[{0}s, {1:0.1f}K]".format(cmd.time, cmd.max_rss / 1024))
 
 	def compile(self, *args, **kargs):
-		True
+		return True
 
 	def test(self, tests_file, run_count=1, mem_limit=None,
 		       time_limit=None):
