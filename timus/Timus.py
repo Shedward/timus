@@ -48,7 +48,7 @@ def main(argv):
 			else:
 				raise CompilationError(ret)
 		else:
-			raise TestFileNotFound(testsfn)
+			raise TestFileNotFound(opts.tests)
 	else:
 		raise WrongParams("Wrong action: '{0}".format(opts.action))
 
