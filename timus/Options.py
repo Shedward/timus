@@ -97,12 +97,15 @@ def str2bytes(val):
 		res = m * 1024
 	elif p == 'K':
 		res = m
-	elif p.isdigit():
-		res = float(val)
+	elif p.isdigit() or p == '.':
+		try:
+			res = float(val)
+		except ValueError:
+			raise WrongParams("Wrong mem limit: {0}" % val)
 	else:
 		raise WrongParams("Wrong mem limit: {0}" % val)
 
-	res = int(round(val * 1024))  # to bytes
+	res = int(round(res * 1024))  # to bytes
 	return res
 
 def parse_args(argv):
