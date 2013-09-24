@@ -1,6 +1,7 @@
 
 from optparse import OptionParser
 from timus.Logger import Log
+from os import path
 
 class WrongParams(Exception):
 	pass
@@ -126,4 +127,18 @@ def parse_args(argv):
 			else:
 				raise WrongParams("Wrong log level: {0}".format(opts.log_lvl))
 
-	return (opts, args)
+	# Check arguments
+	if len(args) == 0:
+		raise WrongParams("Action not defined.")
+	if len(args) == 2:
+		setattr(opts, 'action', args[0])
+		setattr(opts, 'filename', args[1])
+	else:
+		raise WrongParams("Too much args.")
+
+	# Define undefined opts with standard values
+	testsfn = path.splitext(opts.filename)[0] + ".tests"
+	if opts.tests is None:
+		opts.tests = testsfn
+
+	return opts
