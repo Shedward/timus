@@ -3,6 +3,7 @@ import pkg_resources
 
 from timus import Timus
 from timus.RetCodes import RetCode
+from timus import Options
 
 class TestTimus(unittest.TestCase):
 	def test_timus(self):
@@ -12,7 +13,7 @@ class TestTimus(unittest.TestCase):
 		self.assertEqual(Timus.main(['test', fn, '-f']), RetCode.WrongOutput)
 
 	def test_timus_wrong_params(self):
-		self.assertRaises(Timus.WrongParams, 
+		self.assertRaises(Options.WrongParams, 
 						  lambda : Timus.main([""]))
 		self.assertRaises(Timus.SourceFileNotFound, 
 				  		  lambda : Timus.main(["test", "no_file"]))
