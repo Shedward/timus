@@ -50,6 +50,6 @@ def main(argv):
 		else:
 			raise TestFileNotFound(testsfn)
 	else:
-		raise WrongParams("Wrong action: "+action)
+		raise WrongParams("Wrong action: '{0}".format(opts.action))
 
 	return ret
