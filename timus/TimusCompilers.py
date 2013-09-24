@@ -270,7 +270,7 @@ def autodetect_lang(filename):
 		if isinstance(lang, str):
 			return lang
 		elif isinstance(lang, tuple):
-			LOG(Log.Msg, "Warning: Suported {0}, used {1} by default."
+			LOG(Log.Msg, "Warning: Suported '{0}', used '{1}' by default."
 			              .format(lang, lang[0]))
 			return lang[0]
 		else:

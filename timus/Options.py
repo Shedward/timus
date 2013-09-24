@@ -45,7 +45,7 @@ def parser():
 
 	parser.add_option("-r", "--run", action="store",
 		type="string", dest="cmd",
-		help="Specify pattern for 'run' action",
+		help="Specify pattern for 'run' action.",
 		default="$TERM -e {bin}")
 
 	parser.add_option("-f", "--force", action="store_true",
@@ -56,14 +56,14 @@ def parser():
 		help="Set logging level:\n err - show "
 		"only error messages,\n msg - show "
 		"basic messages (default),\n"
-		" vrb - show every execute command")
+		" vrb - show every execute command.")
 
 	parser.add_option("--tl","--time-limit", action="store",
 		help="Specify time limit in seconds. "
 		"If program running longer "
 		"it will be terminated with "
 		"'Time limit exceeded' error. "
-		"Using in test action",
+		"Using in test action.",
 		dest="time_limit", type="float")
 
 	parser.add_option("--ml","--mem-limit", action="store",
@@ -77,8 +77,8 @@ def parser():
 
 	parser.add_option("-c", "--run-count", action="store",
 		help="Specify amount of runing. "
-		"More runs, the more accurate "
-		"the measurements",
+		"More runs, more accurate "
+		"the measurements.",
 		dest="run_count", type="int",
 		default=1
 		)
@@ -102,9 +102,9 @@ def str2bytes(val):
 		try:
 			res = float(val)
 		except ValueError:
-			raise WrongParams("Wrong mem limit: {0}".format(val))
+			raise WrongParams("Wrong mem limit: {0}.".format(val))
 	else:
-		raise WrongParams("Wrong mem limit: {0}".format(val))
+		raise WrongParams("Wrong mem limit: {0}.".format(val))
 
 	res = int(round(res * 1024))  # to bytes
 	return res
@@ -125,7 +125,7 @@ def parse_args(argv):
 			if opts.log_lvl in LOG_LVL_OPTS:
 				opts.log_lvl  = LOG_LVL_OPTS[opts.log_lvl]
 			else:
-				raise WrongParams("Wrong log level: {0}".format(opts.log_lvl))
+				raise WrongParams("Wrong log level: {0}.".format(opts.log_lvl))
 
 	# Check arguments
 	if len(args) == 0:

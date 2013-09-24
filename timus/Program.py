@@ -99,7 +99,7 @@ class Program(object):
 				ext_test_fn = path.join(tests_dir, tst["in file"])
 				stdin = open(ext_test_fn)
 			else:
-				LOG(Log.Err, "No input in test", descr)
+				LOG(Log.Err, "No input in test '", descr, "'.")
 
 			out = str(tst["out"]).rstrip().encode()
 
@@ -125,7 +125,7 @@ class Program(object):
 
 			except WrongOutput:
 				LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
-				LOG(Log.Err, "{0}: error: Test {1} failed."
+				LOG(Log.Err, "{0}: error: Test '{1}'' failed."
 				             .format(self.source(), descr))
 				LOG(Log.Err, "Expected:\n"
 				             "'{0}'\n"
