@@ -101,9 +101,9 @@ def str2bytes(val):
 		try:
 			res = float(val)
 		except ValueError:
-			raise WrongParams("Wrong mem limit: {0}" % val)
+			raise WrongParams("Wrong mem limit: {0}".format(val))
 	else:
-		raise WrongParams("Wrong mem limit: {0}" % val)
+		raise WrongParams("Wrong mem limit: {0}".format(val))
 
 	res = int(round(res * 1024))  # to bytes
 	return res
@@ -124,6 +124,6 @@ def parse_args(argv):
 			if opts.log_lvl in LOG_LVL_OPTS:
 				opts.log_lvl  = LOG_LVL_OPTS[opts.log_lvl]
 			else:
-				raise WrongParams("Wrong log level: {0}" % opts.log_lvl)
+				raise WrongParams("Wrong log level: {0}".format(opts.log_lvl))
 
 	return (opts, args)
