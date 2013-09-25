@@ -2,8 +2,6 @@ timus
 =====
 
 Little timus client with simple input/output testing tool.
-
-Now it's just programs testing tool.
 Lines commented with '//' is not realize yet.
 
 Installation
@@ -125,13 +123,13 @@ Usage
 ####Timus:
 `timus submit example.scala -i86286AA -p1000`  - send solution of '1000. A+B Problem' from example.scala to acm.timus.ru with JudjeID 86286AA
 
-// `timus set id 89542` - global set 89542 as default user id
-
-// `timus set lang G++11` - global set G++11 as default compiler
-
 // `timus init 1000 -l=GCC` - create template for solving 1000s task with GCC, it will create 1000.cpp and files with basic settings and 1000.cpp.tests with tests parsed from condition of the problem.
 
 // `timus sumbit 1000.cpp` - send solution from 1000.cpp to acm.timus.ru using global setting or setting from 1000.cpp
+
+// `timus set id 89542` - global set 89542 as default user id
+
+// `timus set lang G++11` - global set G++11 as default compiler
 
 Tests file format:
 ------------------
