@@ -5,6 +5,7 @@ from timus.Logger import Log
 from timus.RetCodes import RetCode
 from timus.Options import parse_args, WrongParams
 from timus.TimusCompilers import autodetect_program, LANG
+from timus.OnlineJudje import submit
 
 class CompilationError(Exception):
 	pass
@@ -29,6 +30,7 @@ def main(argv):
 	# Detect language if not defined
 	if opts.lang is None:
 		prog = autodetect_program(opts.filename)
+		opts.lang = prog.lang # :C
 	else:
 		prog = LANG[opts.lang](opts.filename)
 
@@ -49,6 +51,9 @@ def main(argv):
 				raise CompilationError(ret)
 		else:
 			raise TestFileNotFound(opts.tests)
+
+	elif opts.action == "submit":
+		submit(opts.id, opts.problem, opts.filename, opts.lang)
 	else:
 		raise WrongParams("Wrong action: '{0}".format(opts.action))
 

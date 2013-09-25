@@ -16,6 +16,8 @@ setup(
 	test_suite='tests',
 	install_requires=[
 		'psutil >= 0.6.1',
-		'PyYAML >= 3.10'
+		'PyYAML >= 3.10',
+		'requests >= 1.1.0-1',
+		'lxml >= 3.1.0-1'
 	]
 )

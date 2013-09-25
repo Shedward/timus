@@ -281,6 +281,8 @@ def autodetect_lang(filename):
 def autodetect_program(filename):
 	lang = autodetect_lang(filename)
 	if lang in LANG:
-		return LANG[lang](filename)
+		program = LANG[lang](filename)
+		program.lang = lang
+		return program
 	else:
 		raise WrongLang(lang)

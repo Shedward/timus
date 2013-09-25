@@ -27,15 +27,18 @@ Troubleshooting.
 ----------------
 If you see error 'Compillation error' it may mean that you don't have installed gcc, used in test, timus won't need gcc to work, it's only mean than you can't compile and test your cpp program local with gcc.
 
+If you see error 'Python.h not found' it may mean that you don't have installed `pyhon3-dev` package for compiling psutil, also you can install psutil manualy using your package manager.
 
-If you see error 'Python.h not found' it may mean that you don't have installed pyhon3-dev package for compiling psutil, also you can install psutil manualy using your package manager.
+If you see error in lxml compiling - install `libxml2-dev libxslt-dev` packages, or install python3-lxml manualy using your package manager.
 
 Requirements
 ------------
 
 - Python 3.3
-- python3-psutil - python package using for benchmark measurements.
-- python3-yaml - python package using for parsing tests files.
+- python3-psutil >= 0.6.1 - python package using for benchmark measurements.
+- python3-yaml >= 3.10 - python package using for parsing tests files.
+- python3-requests >= 1.1.0-1 - using for operation with acm.timus.ru.
+- python3-lxml >= 3.1.0-1 - using for parsing answers from requests.
 - Any timus supported compiler/interpreter:
 	- Visual C 2010
 	- Visual C++ 2010

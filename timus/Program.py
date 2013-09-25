@@ -47,6 +47,7 @@ class TestSet(object):
 
 class Program(object):
 	""" Abstract program object """
+	lang = None
 	def __init__(self, source_fn, run_cmd=["{bin}"]):
 		if source_fn:
 			self.filename = path.abspath(source_fn)

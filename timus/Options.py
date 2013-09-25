@@ -87,6 +87,12 @@ def parser():
 		help="Specify compiler/language dialect.",
 		dest="lang")
 
+	parser.add_option('-i', "--id", action="store",
+		help="Specify JudjeID.", dest="id")
+
+	parser.add_option('-p', "--problem", action="store",
+		help="Problem num.", dest="problem")
+
 	return parser
 
 def str2bytes(val):
