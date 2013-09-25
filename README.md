@@ -123,6 +123,8 @@ Usage
 `timus test source.cpp --run-count 3 --time-lim 2 --mem-lim 5M` - run program 3 times at every test (its let get more accurate result of benchmark) if program will runing longer that 2 seconds or use more than 5Mb of memory it will be terminated.
 
 ####Timus:
+`timus submit example.scala -i86286AA -p1000`  - send solution of '1000. A+B Problem' from example.scala to acm.timus.ru with JudjeID 86286AA
+
 // `timus set id 89542` - global set 89542 as default user id
 
 // `timus set lang G++11` - global set G++11 as default compiler
