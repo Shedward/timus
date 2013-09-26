@@ -4,6 +4,7 @@ import lxml.html
 import re
 
 from timus.Options import WrongParams
+from timus.Logger import Log
 
 class NetworkError(Exception):
 	pass
@@ -86,16 +87,46 @@ def check_errors(r):
 	
 
 def check_results(id, problem, timeout=1):
+	LOG = Log()
 	res = result_table(id)[0]
 	stat = res[5]
 	while stat in ['Compiling', 'Running', 'Waiting']:
 		sleep(timeout)
 		res = result_table(id)[0]
 		stat = res[5]
+		LOG(Log.Vrb, "\t", stat)
 	return res
+
+def format_msg(result):
+	if len(result) < 9:
+		raise ValueError('Not enough elements in result list.')
+
+	# Mark empty lines with $DEL$
+	rep_res = ['$DEL$' if  f == '' else f for f in result]
 	
+	msg_tmpl = '''
+ :: Result:
+	 Solution: {0} 
+	 Time:     {1}
+	 Author:   {2}
+	 Problem:  {3}
+	 Language: {4}
+
+	 Time:     {7} s
+	 Memory:   {8}
+
+	 {5}
+	 Test:     {6}
+'''
+	msg = msg_tmpl.format(*rep_res)
+
+	# Remove all lines marked with $DEL
+	is_not_have_del = lambda l : l.find('$DEL$') == -1
+	return '\n'.join(filter(is_not_have_del, msg.split('\n')))
 
 def submit(id, problem, file, lang):
+	LOG = Log()
+	LOG(Log.Msg, " :: Submiting")
 	r = send(id, problem, file, lang)
 	check_errors(r)
-	print("\n\t".join(check_results(id, problem)))
+	print(format_msg(check_results(id, problem)))
