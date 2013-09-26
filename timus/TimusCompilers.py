@@ -1,6 +1,7 @@
 from timus.Compiler import Compiler, substitute
 from timus.Program import Program, CompilingProgram
 from timus.Logger import Log
+from timus.Exceptions import WrongLang, NotSupportedExt
 
 from os import path
 from sys import exit
@@ -253,12 +254,6 @@ EXT = {
 	"cs": ("mono", "c#"),
 	"scala": "scala"
 }
-
-class WrongLang(Exception):
-	pass
-
-class NotSupportedExt(Exception):
-	pass
 
 def autodetect_lang(filename):
 	base, ext = path.splitext(filename)

@@ -2,9 +2,7 @@
 from optparse import OptionParser
 from timus.Logger import Log
 from os import path
-
-class WrongParams(Exception):
-	pass
+from timus.Exceptions import WrongParams
 
 def parser():
 	HELP_MESSAGE = """

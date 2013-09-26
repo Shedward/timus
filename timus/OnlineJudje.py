@@ -3,11 +3,8 @@ from requests import post
 import lxml.html
 import re
 
-from timus.Options import WrongParams
 from timus.Logger import Log
-
-class NetworkError(Exception):
-	pass
+from timus.Exceptions import NetworkError, WrongParams
 
 BASE = "http://acm.timus.ru/"
 URL = {
