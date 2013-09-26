@@ -37,3 +37,6 @@ class TestAutodetect(unittest.TestCase):
 	def test_autodetect_program(self):
 		self.assertTrue(isinstance(TimusCmp.TimusProgram("example.go"),
 								   TimusCmp.goProgram))
+
+if __name__ == '__main__':
+    unittest.main()

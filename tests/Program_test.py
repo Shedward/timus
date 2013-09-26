@@ -39,3 +39,5 @@ class TestTestSet(unittest.TestCase):
 		self.assertEqual(testset[4][0], 'Bignum')
 		self.assertEqual(testset[-1][1]['out'], 55)
 
+if __name__ == '__main__':
+    unittest.main()

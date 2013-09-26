@@ -19,3 +19,6 @@ class TestOnlineJudje(unittest.TestCase):
 	def test_send(self):
 		r = OnlineJudje.send('86286AA', '1000', 'example.c', 'gcc')
 		self.assertTrue(r.url.find('status.aspx') != -1)
+
+if __name__ == '__main__':
+    unittest.main()

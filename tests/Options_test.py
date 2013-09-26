@@ -44,3 +44,6 @@ class TestOptions(unittest.TestCase):
 	def test_wrong_param_rise(self):
 		self.assertRaises(Options.WrongParams, 
 			lambda : Options.parse_args(["--ml", "12h"]))
+
+if __name__ == '__main__':
+    unittest.main()

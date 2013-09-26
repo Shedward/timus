@@ -17,3 +17,6 @@ class TestTimus(unittest.TestCase):
 						  lambda : Timus.main([""]))
 		self.assertRaises(Timus.SourceFileNotFound, 
 				  		  lambda : Timus.main(["test", "no_file"]))
+
+if __name__ == '__main__':
+    unittest.main()
