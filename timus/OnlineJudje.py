@@ -103,21 +103,21 @@ def format_msg(result):
 
 	# Mark empty lines with $DEL$
 	rep_res = ['$DEL$' if  f == '' else f for f in result]
-	
+
 	msg_tmpl = '''
- :: Result:
-	 Solution: {0} 
-	 Time:     {1}
-	 Author:   {2}
-	 Problem:  {3}
-	 Language: {4}
+ RESULTS:
+	Solution: {0} 
+	Time:     {1}
+	Author:   {2}
+	Problem:  {3}
+	Language: {4}
 
-	 Time:     {7} s
-	 Memory:   {8}
+	Time:     {7} s
+	Memory:   {8}
 
-	 {5}
-	 Test:     {6}
-'''
+	{5}
+	Test:     {6}
+	'''
 	msg = msg_tmpl.format(*rep_res)
 
 	# Remove all lines marked with $DEL
@@ -129,4 +129,4 @@ def submit(id, problem, file, lang):
 	LOG(Log.Msg, " :: Submiting")
 	r = send(id, problem, file, lang)
 	check_errors(r)
-	print(format_msg(check_results(id, problem)))
+	LOG(Log.Msg, format_msg(check_results(id, problem)))
