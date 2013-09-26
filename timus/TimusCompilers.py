@@ -223,34 +223,34 @@ class scalaProgram(CompilingProgram):
 		                                            "{bin}"])
 
 LANG = {
-	"cl": clProgram,
-	"cl++": clppProgram,
-	"gcc": gccProgram,
+	"cl"   : clProgram,
+	"cl++" : clppProgram,
+	"gcc"  : gccProgram,
 	"gcc11": gcc11Program,
-	"g++": gppProgram,
+	"g++"  : gppProgram,
 	"g++11": gpp11Program,
-	"pas": pasProgram,
-	"ghc": hsProgram,
-	"go": goProgram,
-	"c#": cscProgram,
-	"mono": monoProgram,
-	"java": javaProgram,
-	"py2": py2Program,
-	"py3": py3Program,
-	"rb": rubyProgram,
+	"pas"  : pasProgram,
+	"ghc"  : hsProgram,
+	"go"   : goProgram,
+	"c#"   : cscProgram,
+	"mono" : monoProgram,
+	"java" : javaProgram,
+	"py2"  : py2Program,
+	"py3"  : py3Program,
+	"rb"   : rubyProgram,
 	"scala": scalaProgram
 }
-
+\
 EXT = {
-	"cpp": ("g++", "cl++","g++11"),
-	"c": ("gcc", "cl", "gcc11"),
-	"pas": "pas",
-	"py": ("py3", "py2"),
-	"java": "java",
-	"go": "go",
-	"hs": "ghc",
-	"rb": "rb",
-	"cs": ("mono", "c#"),
+	"cpp"  : ("g++", "cl++","g++11"),
+	"c"    : ("gcc", "cl", "gcc11"),
+	"pas"  : "pas",
+	"py"   : ("py3", "py2"),
+	"java" : "java",
+	"go"   : "go",
+	"hs"   : "ghc",
+	"rb"   : "rb",
+	"cs"   : ("mono", "c#"),
 	"scala": "scala"
 }
 
