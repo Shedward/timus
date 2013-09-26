@@ -4,7 +4,7 @@ from os import path
 from timus.Exceptions import CompilationError, SourceFileNotFound, TestFileNotFound, WrongParams
 from timus.Logger import Log
 from timus.OnlineJudje import submit
-from timus.Options import parse_args
+from timus.Options import parse_args, need
 from timus.RetCodes import RetCode
 from timus.TimusCompilers import autodetect_program, LANG
 
@@ -46,6 +46,8 @@ def main(argv):
 			raise TestFileNotFound(opts.tests)
 
 	elif opts.action == "submit":
+		need(opts.id, 'JudjeID')
+		need(opts.problem, 'problem')
 		submit(opts.id, opts.problem, opts.filename, opts.lang)
 	else:
 		raise WrongParams("Wrong action: '{0}".format(opts.action))

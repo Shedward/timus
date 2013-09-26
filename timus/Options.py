@@ -147,3 +147,7 @@ def parse_args(argv):
 		opts.tests = testsfn
 
 	return opts
+
+def need(var, name):
+	if var is None:
+		raise WrongParams(name, 'not defined.')
