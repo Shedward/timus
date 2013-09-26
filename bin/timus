@@ -4,12 +4,13 @@ from sys import argv
 
 from timus.Timus import main
 from timus.Exceptions import TimusError
+from timus.RetCodes import RetCode
 
 if __name__ == '__main__':
 	try:
 		ret = main(argv[1:])
 	except TimusError as e:
-		ret = 256
+		ret = RetCode.Error
 		print(e.msg())
 
 	exit(ret)

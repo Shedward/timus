@@ -1,6 +1,7 @@
 class RetCode:
 	Ok = 0
-	WrongOutput = 255
-	TimeLimitExceeded = 254
+	WrongOutput = 251
+	TimeLimitExceeded = 252
 	MemoryLimitExceeded = 253
-	UnknownError = 256
+	Error = 254
+	UnknownError = 255
