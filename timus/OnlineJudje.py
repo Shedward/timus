@@ -97,12 +97,24 @@ def check_results(id, problem, timeout=1):
 		LOG(Log.Vrb, "\t", stat)
 	return res
 
+def insert(orig, new, pos):
+	return orig[:pos] + new + orig[pos:]
+
+def replace(orig, frm, to):
+	return [to if  x == frm else x for x in orig]
+
 def format_msg(result):
 	if len(result) < 9:
 		raise ValueError('Not enough elements in result list.')
 
+	# Separate time and date stuck together
+	if len(result[1]) > 9:
+		result[1] = insert(result[1], ' ', 8)
+	else:
+		raise ValueError('Time is too short: ', result[1])
+
 	# Mark empty lines with $DEL$
-	rep_res = ['$DEL$' if  f == '' else f for f in result]
+	rep_res = replace(result, '', '$DEL$')
 
 	msg_tmpl = '''
  RESULTS:
