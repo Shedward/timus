@@ -97,13 +97,13 @@ def check_results(id, problem, timeout=1):
 		LOG(Log.Vrb, "\t", stat)
 	return res
 
-def insert(orig, new, pos):
-	return orig[:pos] + new + orig[pos:]
-
-def replace(orig, frm, to):
-	return [to if  x == frm else x for x in orig]
-
 def format_msg(result):
+	def insert(orig, new, pos):
+		return orig[:pos] + new + orig[pos:]
+
+	def replace(orig, frm, to):
+		return [to if  x == frm else x for x in orig]
+
 	if len(result) < 9:
 		raise ValueError('Not enough elements in result list.')
 
