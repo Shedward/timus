@@ -1,21 +1,35 @@
 
-class NetworkError(Exception):
-	pass
+class TimusError(Exception):
+	prefix = 'Timus error:'
 
-class WrongParams(Exception):
-	pass
+	def __init__(self, *args):
+		self.args = args
 
-class CompilationError(Exception):
-	pass
+	def msg(self):
+		return str(self.prefix) + '\n\t' + ' '.join(map(str, self.args))
 
-class SourceFileNotFound(Exception):
-	pass
 
-class TestFileNotFound(Exception):
-	pass
 
-class WrongLang(Exception):
-	pass
+class NetworkError(TimusError):
+	prefix = 'Network error:'
 
-class NotSupportedExt(Exception):
-	pass
+class OnlineJudje(TimusError):
+	prefix = 'Online judje error:'
+
+class WrongParams(TimusError):
+	prefix = 'Wrong parameter:'
+
+class CompilationError(TimusError):
+	prefix = 'Compiler return code:'
+
+class SourceFileNotFound(TimusError):
+	prefix = 'Source file not found:'
+
+class TestFileNotFound(TimusError):
+	prefix = 'Test file not found:'
+
+class WrongLang(TimusError):
+	prefix = 'Wrong language:'
+
+class NotSupportedExt(TimusError):
+	prefix = 'Not supported extension:'

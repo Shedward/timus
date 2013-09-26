@@ -5,7 +5,7 @@ from time import sleep
 import lxml.html
 from requests import post
 
-from timus.Exceptions import NetworkError, WrongParams
+from timus.Exceptions import NetworkError, OnlineJudje, WrongParams
 from timus.Logger import Log
 
 BASE = "http://acm.timus.ru/"
@@ -43,7 +43,7 @@ def send(id, problem, file, lang):
 	}
 	
 	if lang not in LANG_ID:
-		raise WrongParams("Language {0} not supported.".format(lang))
+		raise OnlineJudje("Language {0} not supported.".format(lang))
 
 	data = {
 		'Action':'submit',
@@ -81,7 +81,7 @@ def check_errors(r):
 	reg = '(?<=Red;">).*?(?=</)' # Regex for red text
 	m = re.search(reg, r.text)
 	if m is not None:
-		raise WrongParams(m.group())
+		raise OnlineJudje(m.group())
 
 	
 

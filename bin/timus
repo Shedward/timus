@@ -3,7 +3,13 @@
 from sys import argv
 
 from timus.Timus import main
+from timus.Exceptions import TimusError
 
 if __name__ == '__main__':
-	ret = main(argv[1:])
+	try:
+		ret = main(argv[1:])
+	except TimusError as e:
+		ret = 256
+		print(e.msg())
+
 	exit(ret)
