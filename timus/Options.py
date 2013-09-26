@@ -1,8 +1,9 @@
 
 from optparse import OptionParser
-from timus.Logger import Log
 from os import path
+
 from timus.Exceptions import WrongParams
+from timus.Logger import Log
 
 def parser():
 	HELP_MESSAGE = """

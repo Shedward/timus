@@ -1,8 +1,11 @@
-from subprocess import PIPE, STDOUT
 
-import psutil
+from subprocess import PIPE, STDOUT
 import threading
 from time import sleep
+
+import psutil
+
+
 
 SLEEP = 0.2
 

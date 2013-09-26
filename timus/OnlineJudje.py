@@ -1,10 +1,12 @@
-from time import sleep
-from requests import post
-import lxml.html
-import re
 
-from timus.Logger import Log
+import re
+from time import sleep
+
+import lxml.html
+from requests import post
+
 from timus.Exceptions import NetworkError, WrongParams
+from timus.Logger import Log
 
 BASE = "http://acm.timus.ru/"
 URL = {

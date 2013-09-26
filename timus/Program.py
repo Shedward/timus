@@ -1,10 +1,12 @@
-from os import path
-import yaml
-from subprocess import PIPE
-from io import IOBase
 
-from timus.Observed import ObservedCmd, TimeLimitExceeded, MemoryLimitExceeded
+from io import IOBase
+from os import path
+from subprocess import PIPE
+
+import yaml
+
 from timus.Logger import Log
+from timus.Observed import ObservedCmd, TimeLimitExceeded, MemoryLimitExceeded
 from timus.RetCodes import RetCode
 
 

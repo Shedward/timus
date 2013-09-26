@@ -1,12 +1,12 @@
 
 from os import path
 
-from timus.Logger import Log
-from timus.RetCodes import RetCode
-from timus.Options import parse_args
-from timus.TimusCompilers import autodetect_program, LANG
-from timus.OnlineJudje import submit
 from timus.Exceptions import CompilationError, SourceFileNotFound, TestFileNotFound, WrongParams
+from timus.Logger import Log
+from timus.OnlineJudje import submit
+from timus.Options import parse_args
+from timus.RetCodes import RetCode
+from timus.TimusCompilers import autodetect_program, LANG
 
 
 def main(argv):

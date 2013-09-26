@@ -1,10 +1,10 @@
-from timus.Compiler import Compiler, substitute
-from timus.Program import Program, CompilingProgram
-from timus.Logger import Log
-from timus.Exceptions import WrongLang, NotSupportedExt
-
 from os import path
 from sys import exit
+
+from timus.Compiler import Compiler, substitute
+from timus.Exceptions import WrongLang, NotSupportedExt
+from timus.Logger import Log
+from timus.Program import Program, CompilingProgram
 
 class CL(Compiler):
 	"""Visual C 2010"""

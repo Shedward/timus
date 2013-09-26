@@ -1,4 +1,3 @@
-
 class RetCode:
 	Ok = 0
 	WrongOutput = 255
