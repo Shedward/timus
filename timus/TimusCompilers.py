@@ -272,11 +272,12 @@ def autodetect_lang(filename):
 	else:
 		raise NotSupportedExt(ext)
 
-def autodetect_program(filename):
-	lang = autodetect_lang(filename)
+
+def TimusProgram(source, lang=None):
+	if lang is None:
+		lang = autodetect_lang(source)
+
 	if lang in LANG:
-		program = LANG[lang](filename)
-		program.lang = lang
-		return program
+		return LANG[lang](source)
 	else:
 		raise WrongLang(lang)

@@ -6,7 +6,7 @@ from timus.Logger import Log
 from timus.OnlineJudje import submit
 from timus.Options import parse_args, need
 from timus.RetCodes import RetCode
-from timus.TimusCompilers import autodetect_program, LANG
+from timus.TimusCompilers import TimusProgram
 
 
 def main(argv):
@@ -21,11 +21,8 @@ def main(argv):
 		raise SourceFileNotFound(opts.filename)
 
 	# Detect language if not defined
-	if opts.lang is None:
-		prog = autodetect_program(opts.filename)
-		opts.lang = prog.lang # :C
-	else:
-		prog = LANG[opts.lang](opts.filename)
+	prog = TimusProgram(opts.filename, opts.lang)
+	opts.lang = prog.lang # :C
 
 	# Do action
 	if opts.action == "run":

@@ -35,5 +35,5 @@ class TestAutodetect(unittest.TestCase):
 			lambda : TimusCmp.autodetect_lang("example.txt"))
 
 	def test_autodetect_program(self):
-		self.assertTrue(isinstance(TimusCmp.autodetect_program("example.go"),
+		self.assertTrue(isinstance(TimusCmp.TimusProgram("example.go"),
 								   TimusCmp.goProgram))
