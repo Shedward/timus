@@ -1,5 +1,4 @@
 from os import path
-from sys import exit
 
 from timus.Compiler import Compiler, substitute
 from timus.Exceptions import WrongLang, NotSupportedExt
