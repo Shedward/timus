@@ -4,53 +4,55 @@ from os import path
 from timus.Exceptions import CompilationError, SourceFileNotFound, TestFileNotFound, WrongParams
 from timus.Logger import Log
 from timus.OnlineJudje import submit
-from timus.Options import parse_args, need, show_lang_list
+from timus.Options import Options, show_lang_list
 from timus.RetCodes import RetCode
 from timus.TimusCompilers import TimusProgram
 
 
 def main(argv):
-	opts = parse_args(argv)
+	opts = Options(argv)
 
-	Log(opts.log_lvl)
+	Log(opts.opt.log_lvl)
 
 	ret = RetCode.UnknownError
 
-	# Check sourcefile existance and type
-	if not path.exists(opts.filename):
-		raise SourceFileNotFound(opts.filename)
-
-	# Detect language if not defined
-	prog = TimusProgram(opts.filename, opts.lang)
-	opts.lang = prog.lang # :C
-
 	# Do action
-	if opts.action == "run":
-		ret = prog.run(cmd=opts.cmd.split(' '))
-
-	elif opts.action == "compile":
-		ret = prog.compile(force=opts.force)
-
-	elif opts.action == "test":
-		if path.exists(opts.tests):
-			if (prog.compile(force=opts.force)):
-				ret = prog.test(opts.tests, run_count=opts.run_count,
-				                time_limit=opts.time_limit,
-				                mem_limit=opts.mem_limit)
-			else:
-				raise CompilationError(ret)
-		else:
-			raise TestFileNotFound(opts.tests)
-
-	elif opts.action == "submit":
-		need(opts.id, 'JudjeID')
-		need(opts.problem, 'problem')
-		submit(opts.id, opts.problem, opts.filename, opts.lang)
-	
-	elif opts.action == "list":
+	if opts.opt.action == 'list':
 		show_lang_list()
-
 	else:
-		raise WrongParams("Wrong action: '{0}".format(opts.action))
+		opts.need_args('filename')
+
+		# Check sourcefile existance and type
+		if not path.exists(opts.opt.filename):
+			raise SourceFileNotFound(opts.opt.filename)
+
+		# Detect language if not defined
+		prog = TimusProgram(opts.opt.filename, opts.opt.lang)
+		opts.opt.lang = prog.lang # :C
+
+		if opts.opt.action == "run":
+			ret = prog.run(cmd=opts.opt.cmd.split(' '))
+
+		elif opts.opt.action == "compile":
+			ret = prog.compile(force=opts.opt.force)
+
+		elif opts.opt.action == "test":
+			opts.need_opts('tests')
+			if path.exists(opts.opt.tests):
+				if (prog.compile(force=opts.opt.force)):
+					ret = prog.test(opts.opt.tests, run_count=opts.opt.run_count,
+					                time_limit=opts.opt.time_limit,
+					                mem_limit=opts.opt.mem_limit)
+				else:
+					raise CompilationError(ret)
+			else:
+				raise TestFileNotFound(opts.opt.tests)
+
+		elif opts.opt.action == "submit":
+			opts.need(['filename'], 'id', 'problem')
+			submit(opts.opt.id, opts.opt.problem, opts.opt.filename, opts.opt.lang)
+
+		else:
+			raise WrongParams("Wrong action: '{0}".format(opts.opt.action))
 
 	return ret

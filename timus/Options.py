@@ -6,79 +6,7 @@ from timus.Exceptions import WrongParams
 from timus.Logger import Log
 from timus.TimusCompilers import DESC
 
-HELP_MESSAGE = """
-	timus [OPTIONS] <action> <filename>
-	Use one of the action:
-	    run	    - Run program using by default pattern "$TERM -e {bin}"
-	              where {bin} is name of executable file.
-	              Use -c to change patern.
-	    compile - Compile source file. With interpret languages do nothing.
-	              Use -f to force recompile.
-	    test    - Test program. Searching for <source>.tests by default.
-	              Use -t to specify tests file.
-"""
-
-def parser():
-	parser = OptionParser(usage=HELP_MESSAGE)
-
-	parser.add_option("-t", "--tests", action="store",
-		type="string", dest="tests",
-		help="Specify tests filename. By default "
-		"searching for <source_file>.tests.")
-
-	parser.add_option("-r", "--run", action="store",
-		type="string", dest="cmd",
-		help="Specify pattern for 'run' action.",
-		default="$TERM -e {bin}")
-
-	parser.add_option("-f", "--force", action="store_true",
-		dest="force", help="Force recompile.")
-
-	parser.add_option("--ll","--log-lvl", action="store",
-		dest="log_lvl", default="msg",
-		help="Set logging level:\n err - show "
-		"only error messages,\n msg - show "
-		"basic messages (default),\n"
-		" vrb - show every execute command.")
-
-	parser.add_option("--tl","--time-limit", action="store",
-		help="Specify time limit in seconds. "
-		"If program running longer "
-		"it will be terminated with "
-		"'Time limit exceeded' error. "
-		"Using in test action.",
-		dest="time_limit", type="float")
-
-	parser.add_option("--ml","--mem-limit", action="store",
-		help="Specify maximum memory usage in kbytes"
-		"also you can use notation like 1K, 5.5M, "
-		"0.1g. If program exceed the limit "
-		"it will be terminated with "
-		"'Memory limit exceeded' error. "
-		"Using in test action.",
-		dest="mem_limit", type="string")
-
-	parser.add_option("-c", "--run-count", action="store",
-		help="Specify amount of runing. "
-		"More runs, more accurate "
-		"the measurements.",
-		dest="run_count", type="int",
-		default=1
-		)
-
-	parser.add_option("-l", "--lang", action="store",
-		help="Specify compiler/language dialect.",
-		dest="lang")
-
-	parser.add_option('-i', "--id", action="store",
-		help="Specify JudjeID.", dest="id")
-
-	parser.add_option('-p', "--problem", action="store",
-		help="Problem num.", dest="problem")
-
-	return parser
-
-def str2bytes(val):
+def _str2bytes(val):
 	p = val[-1].upper()
 	m = float(val[0:-1])
 	if p == 'G':
@@ -98,43 +26,128 @@ def str2bytes(val):
 	res = int(round(res * 1024))  # to bytes
 	return res
 
-def parse_args(argv):
-	(opts, args) = parser().parse_args(argv)
+class Options:
+	opt = None
 
-	# Convers special params to sutable type
-	if opts.mem_limit is not None:
-		opts.mem_limit = str2bytes(opts.mem_limit)
+	def _init_parser(self):
+		HELP_MESSAGE = """
+			timus [OPTIONS] <action> <filename>
+			Use one of the action:
+			    run	    - Run program using by default pattern "$TERM -e {bin}"
+			              where {bin} is name of executable file.
+			              Use -c to change patern.
+			    compile - Compile source file. With interpret languages do nothing.
+			              Use -f to force recompile.
+			    test    - Test program. Searching for <source>.tests by default.
+			              Use -t to specify tests file.
+		"""
 
-	if opts.log_lvl is not None:
-			LOG_LVL_OPTS = {
-				"err": Log.Err,
-				"msg": Log.Msg,
-				"vrb": Log.Vrb
-				}
-			if opts.log_lvl in LOG_LVL_OPTS:
-				opts.log_lvl  = LOG_LVL_OPTS[opts.log_lvl]
-			else:
-				raise WrongParams("Wrong log level: {0}.".format(opts.log_lvl))
+		self.parser = OptionParser(usage=HELP_MESSAGE)
 
-	# Check arguments
-	if len(args) == 0:
-		raise WrongParams("Action not defined.")
-	if len(args) > 0:
-		setattr(opts, 'action', args[0])
+		self.parser.add_option("-t", "--tests", action="store",
+			type="string", dest="tests",
+			help="Specify tests filename. By default "
+			"searching for <source_file>.tests.")
 
-	if len(args) == 2:
-		setattr(opts, 'filename', args[1])
-	elif opts.action == 'list':
-		pass
-	else:
-		raise WrongParams("Too much args.")
+		self.parser.add_option("-r", "--run", action="store",
+			type="string", dest="cmd",
+			help="Specify pattern for 'run' action.",
+			default="$TERM -e {bin}")
 
-	# Define undefined opts with standard values
-	testsfn = path.splitext(opts.filename)[0] + ".tests"
-	if opts.tests is None:
-		opts.tests = testsfn
+		self.parser.add_option("-f", "--force", action="store_true",
+			dest="force", help="Force recompile.")
 
-	return opts
+		self.parser.add_option("--ll","--log-lvl", action="store",
+			dest="log_lvl", default="msg",
+			help="Set logging level:\n err - show "
+			"only error messages,\n msg - show "
+			"basic messages (default),\n"
+			" vrb - show every execute command.")
+
+		self.parser.add_option("--tl","--time-limit", action="store",
+			help="Specify time limit in seconds. "
+			"If program running longer "
+			"it will be terminated with "
+			"'Time limit exceeded' error. "
+			"Using in test action.",
+			dest="time_limit", type="float")
+
+		self.parser.add_option("--ml","--mem-limit", action="store",
+			help="Specify maximum memory usage in kbytes"
+			"also you can use notation like 1K, 5.5M, "
+			"0.1g. If program exceed the limit "
+			"it will be terminated with "
+			"'Memory limit exceeded' error. "
+			"Using in test action.",
+			dest="mem_limit", type="string")
+
+		self.parser.add_option("-c", "--run-count", action="store",
+			help="Specify amount of runing. "
+			"More runs, more accurate "
+			"the measurements.",
+			dest="run_count", type="int",
+			default=1
+			)
+
+		self.parser.add_option("-l", "--lang", action="store",
+			help="Specify compiler/language dialect.",
+			dest="lang")
+
+		self.parser.add_option('-i', "--id", action="store",
+			help="Specify JudjeID.", dest="id")
+
+		self.parser.add_option('-p', "--problem", action="store",
+			help="Problem num.", dest="problem")
+
+	def __init__(self, argv):
+		self._init_parser()
+		(self.opt, self.args) = self.parser.parse_args(argv)
+
+		# Define action
+		if len(self.args) > 0:
+			setattr(self.opt, 'action', self.args[0])
+			self.args = self.args[1:]
+		else:
+			raise WrongParams("Action not defined.")
+
+		# Parce special options
+		if self.opt.mem_limit is not None:
+			self.opt.mem_limit = _str2bytes(self.opt.mem_limit)
+
+		if self.opt.log_lvl is not None:
+				LOG_LVL_OPTS = {
+					"err": Log.Err,
+					"msg": Log.Msg,
+					"vrb": Log.Vrb
+					}
+				if self.opt.log_lvl in LOG_LVL_OPTS:
+					self.opt.log_lvl  = LOG_LVL_OPTS[self.opt.log_lvl]
+				else:
+					raise WrongParams("Wrong log level: {0}.".format(self.opt.log_lvl))
+
+	def need_args(self, *arg_names):
+		if len(self.args) < len(arg_names):
+			raise WrongParams("Not enough args.")
+		elif len(self.args) > len(arg_names):
+			raise WrongParams("Too much args.")
+		else:
+			for name, val in zip(arg_names, self.args):
+				setattr(self.opt, name, val)
+
+	def need_opts(self, *opts_names):
+		for name in opts_names:
+			if not hasattr(self.opt, name):
+				raise Exception("Option '{0}' is not exist.".format(name))
+
+			if getattr(self.opt, name) is None:
+				self._try_define(name)
+
+	def _try_define(self, name):
+		if name == 'tests' and self.opt.tests is None:
+			self.need_args('filename')
+			self.opt.tests = path.splitext(self.opt.filename)[0] + ".tests"
+		else:
+			raise WrongParams("Option '{0}' is not defined.".format(name))
 
 def show_lang_list():
 	LANGS_LIST = '\n\t'.join([lang + " - " + desc for lang, desc in DESC.items()])
@@ -143,8 +156,3 @@ def show_lang_list():
 
 	""" + LANGS_LIST
 	print(MSG)
-
-
-def need(var, name):
-	if var is None:
-		raise WrongParams(name, 'not defined.')
