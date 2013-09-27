@@ -240,7 +240,25 @@ LANG = {
 	"rb"   : rubyProgram,
 	"scala": scalaProgram
 }
-\
+
+DESC = {
+	'cl'   : "Visual C 2010",
+	'cl++' : "Visual C 2010",
+	'gcc'  : "GCC 4.7.2",
+	'gcc11': "GCC 4.7.2 with C11",
+	'g++'  : "G++ 4.7.2",
+	'g++11': "G++ 4.7.2 with C++11",
+	'pas'  : "FreePascal 2.4.0",
+	'ghc'  : "Haskell 7.6.1",
+	'go'   : "Go 1.7",
+	'c#'   : "Visual C#",
+	'mono' : "Mono 3.0.7",
+	'java' : "Java 1.7",
+	'py2'  : "Python 2.7",
+	'py3'  : "Python 3.3",
+	'rb'   : "Ruby 1.9.3",
+}
+
 EXT = {
 	"cpp"  : ("g++", "cl++","g++11"),
 	"c"    : ("gcc", "cl", "gcc11"),

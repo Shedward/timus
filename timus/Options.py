@@ -4,9 +4,9 @@ from os import path
 
 from timus.Exceptions import WrongParams
 from timus.Logger import Log
+from timus.TimusCompilers import DESC
 
-def parser():
-	HELP_MESSAGE = """
+HELP_MESSAGE = """
 	timus [OPTIONS] <action> <filename>
 	Use one of the action:
 	    run	    - Run program using by default pattern "$TERM -e {bin}"
@@ -16,25 +16,9 @@ def parser():
 	              Use -f to force recompile.
 	    test    - Test program. Searching for <source>.tests by default.
 	              Use -t to specify tests file.
+"""
 
-	List of compilers/interpreters for -l option:
-	    cl    - Visual C 2010
-	    cl++  - Visual C 2010
-	    gcc   - GCC 4.7.2
-	    gcc11 - GCC 4.7.2 with C11
-	    g++   - G++ 4.7.2
-	    g++11 - G++ 4.7.2 with C++11
-	    pas   - FreePascal 2.4.0
-	    ghc   - Haskell 7.6.1
-	    go    - Go 1.7
-	    c#    - Visual C#
-	    mono  - Mono 3.0.7
-	    java  - Java 1.7
-	    py2   - Python 2.7
-	    py3   - Python 3.3
-	    rb    - Ruby 1.9.3
-
-	"""
+def parser():
 	parser = OptionParser(usage=HELP_MESSAGE)
 
 	parser.add_option("-t", "--tests", action="store",
@@ -135,9 +119,13 @@ def parse_args(argv):
 	# Check arguments
 	if len(args) == 0:
 		raise WrongParams("Action not defined.")
-	if len(args) == 2:
+	if len(args) > 0:
 		setattr(opts, 'action', args[0])
+
+	if len(args) == 2:
 		setattr(opts, 'filename', args[1])
+	elif opts.action == 'list':
+		pass
 	else:
 		raise WrongParams("Too much args.")
 
@@ -147,6 +135,15 @@ def parse_args(argv):
 		opts.tests = testsfn
 
 	return opts
+
+def show_lang_list():
+	LANGS_LIST = '\n\t'.join([lang + " - " + desc for lang, desc in DESC.items()])
+	MSG = """
+		List of compilers/interpreters for -l option:
+
+	""" + LANGS_LIST
+	print(MSG)
+
 
 def need(var, name):
 	if var is None:

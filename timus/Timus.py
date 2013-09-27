@@ -4,7 +4,7 @@ from os import path
 from timus.Exceptions import CompilationError, SourceFileNotFound, TestFileNotFound, WrongParams
 from timus.Logger import Log
 from timus.OnlineJudje import submit
-from timus.Options import parse_args, need
+from timus.Options import parse_args, need, show_lang_list
 from timus.RetCodes import RetCode
 from timus.TimusCompilers import TimusProgram
 
@@ -46,6 +46,10 @@ def main(argv):
 		need(opts.id, 'JudjeID')
 		need(opts.problem, 'problem')
 		submit(opts.id, opts.problem, opts.filename, opts.lang)
+	
+	elif opts.action == "list":
+		show_lang_list()
+
 	else:
 		raise WrongParams("Wrong action: '{0}".format(opts.action))
 

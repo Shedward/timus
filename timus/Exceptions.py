@@ -1,4 +1,3 @@
-
 class TimusError(Exception):
 	prefix = 'Timus error:'
 	postfix = ''
@@ -35,6 +34,7 @@ class TestFileNotFound(TimusError):
 
 class WrongLang(TimusError):
 	prefix = 'Wrong language:'
+	postfix = "Use 'timus list' to see all suported languages for -l option."
 
 class NotSupportedExt(TimusError):
 	prefix = 'Not supported extension:'
