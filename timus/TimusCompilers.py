@@ -257,6 +257,7 @@ DESC = {
 	'py2'  : "Python 2.7",
 	'py3'  : "Python 3.3",
 	'rb'   : "Ruby 1.9.3",
+	'vb'   : "VB.NET 2010"
 }
 
 EXT = {
