@@ -40,6 +40,7 @@ class Options:
 			              Use -f to force recompile.
 			    test    - Test program. Searching for <source>.tests by default.
 			              Use -t to specify tests file.
+			    list    - Show list of all languages for -l option.
 		"""
 
 		self.parser = OptionParser(usage=HELP_MESSAGE)
