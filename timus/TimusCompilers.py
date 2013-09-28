@@ -216,10 +216,7 @@ class scalaProgram(CompilingProgram):
 	def __init__(self, sourcefn):
 		super(scalaProgram, self).__init__(source_fn=sourcefn,
 		                                   compiler=scalac(),
-		                                   run_cmd=["java", "-Xmx544m",
-		                                            "-Xss64m", "-DONLINE_JUDGE",
-		                                            "-classpath",
-		                                            ".;scala-library.jar",
+		                                   run_cmd=["scala", "-DONLINE_JUDGE",
 		                                            "{bin}"])
 
 LANG = {
