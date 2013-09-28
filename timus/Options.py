@@ -36,7 +36,7 @@ class Options:
 			    run	    - Run program using by default pattern "$TERM -e {bin}"
 			              where {bin} is name of executable file.
 			              Use -c to change patern.
-			    compile - Compile source file. With interpret languages do nothing.
+			    build - Compile source file. With interpret languages do nothing.
 			              Use -f to force recompile.
 			    test    - Test program. Searching for <source>.tests by default.
 			              Use -t to specify tests file.

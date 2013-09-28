@@ -60,28 +60,31 @@ Usage
         run     - Run program using by default pattern "$TERM -e {bin}"
                   where {bin} is name of executable file.
                   Use -c to change patern.
-        compile - Compile source file. For interpret languages do nothing.
+        build - Compile source file. For interpret languages do nothing.
                   Use -f to force recompile.
         test    - Test program. Searching for <source>.tests by default.
                   Use -t to specify tests file.
 
 
     List of compilers/interpreters for -l option:
+        c# - Visual C#
         cl    - Visual C 2010
-        cl++  - Visual C 2010
-        gcc   - GCC 4.7.2
-        gcc11 - GCC 4.7.2 with C11
-        g++   - G++ 4.7.2
+        cl - Visual C 2010
+        cl++ - Visual C 2010
+        g++ - G++ 4.7.2
         g++11 - G++ 4.7.2 with C++11
-        pas   - FreePascal 2.4.0
-        ghc   - Haskell 7.6.1
-        go    - Go 1.7
-        c#    - Visual C#
-        mono  - Mono 3.0.7
-        java  - Java 1.7
-        py2   - Python 2.7
-        py3   - Python 3.3
-        rb    - Ruby 1.9.3
+        gcc - GCC 4.7.2
+        gcc11 - GCC 4.7.2 with C11
+        ghc - Haskell 7.6.1
+        go - Go 1.7
+        java - Java 1.7
+        mono - Mono 3.0.7
+        pas - FreePascal 2.4.0
+        py2 - Python 2.7
+        py3 - Python 3.3
+        rb - Ruby 1.9.3
+        vb - VB.NET 2010
+
 
 
     Options:
@@ -110,11 +113,11 @@ Usage
 
 ###Examples:
 ####Local:
-`timus compile source.cpp` - run gcc compiler (chosen by extension of sourcefile).
+`timus build source.cpp` - run gcc compiler (chosen by extension of sourcefile).
 
-`timus compile source.cpp -lcl++ -f` - recompile using cl instead of gcc.
+`timus build source.cpp -lcl++` - recompile using cl instead of gcc.
 
-`timus run -c'gnome-terminal -e {bin}' source` - run program in gnome-terminal, recompile if needed.
+`timus run -c'gnome-terminal -e {bin}' source.cpp` - run program in gnome-terminal, recompile if needed.
 
 `timus test source.cpp` - test program using tests from source.cpp.tests file.
 

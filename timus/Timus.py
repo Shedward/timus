@@ -33,8 +33,8 @@ def main(argv):
 		if opts.opt.action == "run":
 			ret = prog.run(cmd=opts.opt.cmd.split(' '))
 
-		elif opts.opt.action == "compile":
-			ret = prog.compile(force=opts.opt.force)
+		elif opts.opt.action == "build":
+			ret = prog.compile(force=True)
 
 		elif opts.opt.action == "test":
 			opts.need_opts('tests')
