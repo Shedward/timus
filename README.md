@@ -57,7 +57,7 @@ Usage
     Usage: 
     timus [OPTIONS] <action> <filename>
     Use one of the action:
-        run     - Run program using by default pattern "$TERM -e {bin}"
+        run     - Run program using by default pattern "{bin}"
                   where {bin} is name of executable file.
                   Use -c to change patern.
         build - Compile source file. For interpret languages do nothing.

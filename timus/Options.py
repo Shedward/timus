@@ -54,7 +54,7 @@ class Options:
 		self.parser.add_option("-r", "--run", action="store",
 			type="string", dest="cmd",
 			help="Specify pattern for 'run' action.",
-			default="$TERM -e {bin}")
+			default="{bin}")
 
 		self.parser.add_option("-f", "--force", action="store_true",
 			dest="force", help="Force recompile.")
