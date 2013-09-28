@@ -135,10 +135,10 @@ class goProgram(CompilingProgram):
 		                                compiler=GO())
 
 
-class MCS(Compiler):
+class DMCS(Compiler):
 	"""Mono"""
 	def __init__(self):
-		super(MCS, self).__init__("mcs", "{base}.exe")
+		super(DMCS, self).__init__("dmcs", "{base}.exe")
 		self.add_args(r"/o+ /d:ONLINE_JUDGE "
 		              r"/r:System.Numerics.dll "
 		              r"{file}")
@@ -147,7 +147,7 @@ class MCS(Compiler):
 class monoProgram(CompilingProgram):
 	def __init__(self, sourcefn):
 		super(monoProgram, self).__init__(source_fn=sourcefn,
-		                                  compiler=MCS(),
+		                                  compiler=DMCS(),
 		                                  run_cmd=["mono", "{bin}"])
 
 
