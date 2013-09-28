@@ -64,6 +64,8 @@ Usage
                   Use -f to force recompile.
         test    - Test program. Searching for <source>.tests by default.
                   Use -t to specify tests file.
+        submit  - Send solution to acm.timus.ru server. Need defined -i and -p opts.
+
 
 
     List of compilers/interpreters for -l option:

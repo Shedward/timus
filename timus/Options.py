@@ -41,6 +41,7 @@ class Options:
 			    test    - Test program. Searching for <source>.tests by default.
 			              Use -t to specify tests file.
 			    list    - Show list of all languages for -l option.
+			    submit  - Send solution to acm.timus.ru server. Need defined -i and -p opts.
 		"""
 
 		self.parser = OptionParser(usage=HELP_MESSAGE)
