@@ -1,7 +1,2 @@
 
-# {problem}
-# {url}
-# {author}
-# {lang}
-
-print('Hello {name}!')
+print('Hello!')

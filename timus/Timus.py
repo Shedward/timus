@@ -3,7 +3,7 @@ from os import path
 
 from timus.Exceptions import CompilationError, SourceFileNotFound, TestFileNotFound, WrongParams
 from timus.Logger import Log
-from timus.OnlineJudje import submit
+from timus.OnlineJudje import submit, init
 from timus.Options import Options
 from timus.RetCodes import RetCode
 from timus.TimusCompilers import TimusProgram, show_lang_list
@@ -19,6 +19,10 @@ def main(argv):
 	# Do action
 	if opts.opt.action == 'list':
 		show_lang_list()
+	if opts.opt.action == 'init':
+		opts.need_args('problem')
+		opts.need_opts('id')
+		init(opts.opt.problem, opts.opt.id, opts.opt.lang)
 	else:
 		opts.need_args('filename')
 

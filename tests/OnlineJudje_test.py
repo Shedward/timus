@@ -20,5 +20,15 @@ class TestOnlineJudje(unittest.TestCase):
 		r = OnlineJudje.send('86286AA', '1000', 'example.c', 'gcc')
 		self.assertTrue(r.url.find('status.aspx') != -1)
 
+	def test_get_problem_data(self):
+		data = OnlineJudje.get_problem_data('1000')
+		self.assertEqual(data['problem_id'], '1000')
+		self.assertEqual(data['problem_desc'], 'A+B Problem')
+		self.assertEqual(data['test_input'], '1 5')
+		self.assertEqual(data['test_output'], '6')
+
+	def test_init(self):
+		OnlineJudje.init('1000', '86286AA', 'scala')
+
 if __name__ == '__main__':
     unittest.main()

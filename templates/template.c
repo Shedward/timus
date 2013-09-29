@@ -1,14 +1,8 @@
 
-/* {problem}
- * {url}
- * {author}
- * {lang}
- */
-
 #include <stdio.h>
 
 int main()
 {
-	printf("Hello {name}!");
+	printf("Hello!");
 	return 0;
 }

@@ -8,7 +8,7 @@ setup(
 	author='Vlad Maltsev',
 	author_email='shedwardx@gmail.com',
 	url='https://github.com/Shedward/timus',
-	packages=["timus"],
+	packages=["timus","templates"],
 	description="Console client for acm.timus.ru with simple in/out test framework",
 	long_description=open(join(dirname(__file__), 'README.md')).read(),
 	license=open(join(dirname(__file__),"LICENSE")).read(),
@@ -19,5 +19,6 @@ setup(
 		'PyYAML >= 3.10',
 		'requests >= 1.1.0-1',
 		'lxml >= 3.1.0-1'
-	]
+	],
+	include_package_data=True
 )

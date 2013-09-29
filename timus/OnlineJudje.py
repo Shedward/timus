@@ -1,11 +1,14 @@
 
 import re
 from time import sleep
+import pkg_resources
 
 import lxml.html
 from requests import post
 
-from timus.Exceptions import NetworkError, OnlineJudje, WrongParams
+from timus.Exceptions import NetworkError, OnlineJudje
+from timus.Templating import template
+from timus.TimusCompilers import lang_description, ext_by_lang
 from timus.Logger import Log
 
 BASE = "http://acm.timus.ru/"
@@ -60,11 +63,6 @@ def send(id, problem, file, lang):
 				   headers=headers)
 	return request
 
-def get_name(id):
-	html = lxml.html.parse(URL['author'].format(id=id[0:5]))
-	name = html.xpath('//h2[@class="author_name"]/text()')[0]
-	return name
-
 def result_table(id):
 	html = lxml.html.parse(URL['status'].format(id=id[0:5]))
 	table = html.xpath('//table[@class="status"]')[0].findall('tr')
@@ -73,13 +71,10 @@ def result_table(id):
 		data.append([c.text_content() for c in row.getchildren()])
 	return data[2:-1]
 
-def check_errors(r):
-	if r.status_code != 200:
-		raise NetworkError(r.status_code)
-
+def check_errors(html):
 	# Check error message from acm.timus.ru
 	reg = '(?<=Red;">).*?(?=</)' # Regex for red text
-	m = re.search(reg, r.text)
+	m = re.search(reg, html)
 	if m is not None:
 		raise OnlineJudje(m.group())
 
@@ -139,5 +134,54 @@ def submit(id, problem, file, lang):
 	LOG = Log()
 	LOG(Log.Msg, " :: Submiting")
 	r = send(id, problem, file, lang)
-	check_errors(r)
+	if r.status_code != 200:
+		raise NetworkError(r.status_code)
+	check_errors(r.text)
 	LOG(Log.Msg, format_msg(check_results(id, problem)))
+
+def get_name(id):
+	html = lxml.html.parse(URL['author'].format(id=id[0:5]))
+	name = html.xpath('//h2[@class="author_name"]/text()')[0]
+	return name
+
+def get_problem_data(problem):
+	res = {}
+
+	url = URL['problem'].format(problem=problem)
+	res['url'] = url
+	html = lxml.html.parse(url)
+
+	check_errors(lxml.html.tostring(html).decode())
+
+	problem_title = html.xpath('//h2[@class="problem_title"]/text()')[0]
+	(problem_id, problem_desc) = map(str.strip, problem_title.split('.'))
+	res['problem_id'] = problem_id
+	res['problem_desc'] = problem_desc
+
+	inp, out = html.xpath('//pre[@class="intable"]/text()')
+	res['test_input'] = inp
+	res['test_output'] = out
+	return res
+
+def comment_by_ext(ext):
+	if ext in ['cpp', 'c', 'pas', 'cs', 'go', 'java', 'scala']:
+		return ' // '
+	elif ext in ['py', 'rb', 'tests']:
+		return ' # '
+	elif ext == 'hs':
+		return ' -- '
+
+def init(problem, id, lang, templatefn=None, filename=None):
+	data = {
+		'name': get_name(id),
+		'id' : id,
+		'lang_str' : lang,
+		'lang_descr' : lang_description(lang)}
+	data.update(get_problem_data(problem))
+	ext = ext_by_lang(lang)
+	comment_start = comment_by_ext(ext)
+	if templatefn is None:
+		templatefn = pkg_resources.resource_filename('templates','template.'+ ext)
+	if filename is None:
+		filename = (data['problem_id']+'.'+data['problem_desc'] + '.' + ext).replace(' ', '_')
+	template(templatefn, filename, data, comment_start)

@@ -1,14 +1,8 @@
 
-/* {problem}
- * {url}
- * {author}
- * {lang}
- */
-
 #include <iostream>
 
 int main()
 {
-   std::cout << "Hello {name}!";
+   std::cout << "Hello!";
    return 0;
 }

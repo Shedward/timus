@@ -1,9 +1,10 @@
 
-# {problem}
-# {author}
+# Problem: 1000. A+B Problem
+# Url: http://acm.timus.ru/problem.aspx?space=1&num=1000
+# Author: Shed (86286AA)
 
 - Sample: 
     in: |
-        {test_input}
+        1 5
     out: |
-        {test_output}
+        6
