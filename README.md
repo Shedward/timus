@@ -29,6 +29,9 @@ If you see error 'Python.h not found' it may mean that you don't have installed 
 
 If you see error in lxml compiling - install `libxml2-dev libxslt-dev` packages, or install python3-lxml manualy using your package manager.
 
+If you get: `UserWarning: <path> is writable by group/others and vulnerable to attack...` you can use command `chmod g-wx,o-wx <path>` to remove warning.
+
+
 Requirements
 ------------
 
