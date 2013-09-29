@@ -1,0 +1,9 @@
+
+# {problem}
+# {author}
+
+- Sample: 
+    in: |
+        {test_input}
+    out: |
+        {test_output}
