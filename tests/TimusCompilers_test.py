@@ -1,6 +1,6 @@
 import unittest
 import pkg_resources
-from os import path, chdir
+from os import path, chdir, getcwd
 
 import timus.TimusCompilers as TimusCmp 
 
@@ -9,6 +9,7 @@ class TestAutodetect(unittest.TestCase):
 	def setUp(self):
 		filename = pkg_resources.resource_filename('examples', 'example.cpp')
 		file_dir = path.dirname(path.abspath(filename))
+		self.defdir = getcwd()
 		chdir(file_dir)
 
 	def test_autodetect_lang(self):
@@ -37,6 +38,8 @@ class TestAutodetect(unittest.TestCase):
 	def test_autodetect_program(self):
 		self.assertTrue(isinstance(TimusCmp.TimusProgram("example.go"),
 								   TimusCmp.goProgram))
+	def tearDown(self):
+		chdir(self.defdir)
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,6 +1,6 @@
 import unittest
 import pkg_resources
-from os import chdir, path
+from os import chdir, path, getcwd, remove
 
 from timus import OnlineJudje
 
@@ -8,7 +8,9 @@ class TestOnlineJudje(unittest.TestCase):
 	def setUp(self):
 		filename = pkg_resources.resource_filename('examples', 'example.py')
 		file_dir = path.dirname(path.abspath(filename))
+		self.defdir = getcwd()
 		chdir(file_dir)
+
 
 	def test_get_name(self):
 		self.assertEqual(OnlineJudje.get_name('86286AA'), "Shed")
@@ -29,6 +31,13 @@ class TestOnlineJudje(unittest.TestCase):
 
 	def test_init(self):
 		OnlineJudje.init('1000', '86286AA', 'scala')
+		self.assertTrue(path.exists('1000.A+B_Problem.scala'))
+		self.assertTrue(path.exists('1000.A+B_Problem.tests'))
+		remove('1000.A+B_Problem.scala')
+		remove('1000.A+B_Problem.tests')
+
+	def tearDown(self):
+		chdir(self.defdir)
 
 if __name__ == '__main__':
     unittest.main()
