@@ -1,4 +1,5 @@
 
+from os import path
 import re
 from time import sleep
 import pkg_resources
@@ -172,12 +173,18 @@ def comment_by_ext(ext):
 		return ' -- '
 
 def init(problem, id, lang, templatefn=None, filename=None):
+	LOG = Log()
+	LOG(Log.Msg, " :: Getting problem")
 	data = {
 		'name': get_name(id),
 		'id' : id,
 		'lang_str' : lang,
 		'lang_descr' : lang_description(lang)}
 	data.update(get_problem_data(problem))
+
+	MSG="\t{problem_id}. {problem_desc}\n\t{url}\n"
+	LOG(Log.Msg, MSG.format(**data))
+
 	ext = ext_by_lang(lang)
 	comment_start = comment_by_ext(ext)
 	if templatefn is None:
@@ -185,3 +192,6 @@ def init(problem, id, lang, templatefn=None, filename=None):
 	if filename is None:
 		filename = (data['problem_id']+'.'+data['problem_desc'] + '.' + ext).replace(' ', '_')
 	template(templatefn, filename, data, comment_start)
+	LOG(Log.Msg, " :: Сreated")
+	LOG(Log.Msg, "\t"+filename)
+	LOG(Log.Msg, "\t"+path.splitext(filename)[0] + '.tests')
