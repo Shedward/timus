@@ -268,23 +268,33 @@ def lang_description(lang):
 	else:
 		raise WrongLang(lang)
 
-def lang_by_ext(ext):
-	EXT = {
-		"cpp"  : ("g++", "cl++","g++11"),
-		"c"    : ("gcc", "cl", "gcc11"),
-		"pas"  : "pas",
-		"py"   : ("py3", "py2"),
-		"java" : "java",
-		"go"   : "go",
-		"hs"   : "ghc",
-		"rb"   : "rb",
-		"cs"   : ("mono", "c#"),
-		"scala": "scala"
+_EXT = {
+	"cpp"  : ("g++", "cl++","g++11"),
+	"c"    : ("gcc", "cl", "gcc11"),
+	"pas"  : ("pas"),
+	"py"   : ("py3", "py2"),
+	"java" : ("java"),
+	"go"   : ("go"),
+	"hs"   : ("ghc"),
+	"rb"   : ("rb"),
+	"cs"   : ("mono", "c#"),
+	"scala": ("scala")
 	}
-	if ext in EXT:
-		return EXT[ext]
+
+def lang_by_ext(ext):
+	if ext in _EXT:
+		return _EXT[ext]
 	else:
 		raise NotSupportedExt(ext)
+
+def ext_by_lang(lang):
+	rev_EXT = {}
+	for k, i in _EXT.items():
+		rev_EXT.update(dict.fromkeys(i, k))
+	if lang in rev_EXT:
+		return rev_EXT[lang]
+	else:
+		WrongLang(lang)
 
 def show_lang_list():
 	LANGS_LIST = '\n\t'.join([lang + " - " + desc for lang, desc in _DESC.items()])
@@ -300,15 +310,10 @@ def autodetect_lang(filename):
 		ext = ext[1:] # remove leading dot
 	LOG = Log()
 	lang = lang_by_ext(ext)
-	if isinstance(lang, str):
-		return lang
-	elif isinstance(lang, tuple):
+	if len(lang) > 1:
 		LOG(Log.Msg, "Warning: Suported '{0}', used '{1}' by default."
 		              .format(lang, lang[0]))
-		return lang[0]
-	else:
-		raise Exception(type(lang))
-
+	return lang[0]
 
 def TimusProgram(source, lang=None):
 	if lang is None:
