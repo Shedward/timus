@@ -217,3 +217,4 @@ class CompilingProgram(Program):
 		if self.is_compiled or self.compile():
 			return super(CompilingProgram, self).test(tests, run_count, mem_limit,
 			                                          time_limit)
+
