@@ -259,7 +259,8 @@ _DESC = {
 		'py2'  : "Python 2.7",
 		'py3'  : "Python 3.3",
 		'rb'   : "Ruby 1.9.3",
-		'vb'   : "VB.NET 2010"
+		'vb'   : "VB.NET 2010",
+		'scala': "Scala 2.10.1"
 	}
 def lang_description(lang):
 
@@ -271,14 +272,14 @@ def lang_description(lang):
 _EXT = {
 	"cpp"  : ("g++", "cl++","g++11"),
 	"c"    : ("gcc", "cl", "gcc11"),
-	"pas"  : ("pas"),
+	"pas"  : ("pas",),
 	"py"   : ("py3", "py2"),
-	"java" : ("java"),
-	"go"   : ("go"),
-	"hs"   : ("ghc"),
-	"rb"   : ("rb"),
+	"java" : ("java",),
+	"go"   : ("go",),
+	"hs"   : ("ghc",),
+	"rb"   : ("rb",),
 	"cs"   : ("mono", "c#"),
-	"scala": ("scala")
+	"scala": ("scala",)
 	}
 
 def lang_by_ext(ext):
