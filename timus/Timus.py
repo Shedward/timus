@@ -4,9 +4,9 @@ from os import path
 from timus.Exceptions import CompilationError, SourceFileNotFound, TestFileNotFound, WrongParams
 from timus.Logger import Log
 from timus.OnlineJudje import submit
-from timus.Options import Options, show_lang_list
+from timus.Options import Options
 from timus.RetCodes import RetCode
-from timus.TimusCompilers import TimusProgram
+from timus.TimusCompilers import TimusProgram, show_lang_list
 
 
 def main(argv):

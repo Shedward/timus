@@ -4,7 +4,6 @@ from os import path
 
 from timus.Exceptions import WrongParams
 from timus.Logger import Log
-from timus.TimusCompilers import DESC
 
 def _str2bytes(val):
 	p = val[-1].upper()
@@ -150,11 +149,3 @@ class Options:
 			self.opt.tests = path.splitext(self.opt.filename)[0] + ".tests"
 		else:
 			raise WrongParams("Option '{0}' is not defined.".format(name))
-
-def show_lang_list():
-	LANGS_LIST = '\n\t'.join([lang + " - " + desc for lang, desc in DESC.items()])
-	MSG = """
-		List of compilers/interpreters for -l option:
-
-	""" + LANGS_LIST
-	print(MSG)
