@@ -23,11 +23,12 @@ class TestOnlineJudje(unittest.TestCase):
 		self.assertTrue(r.url.find('status.aspx') != -1)
 
 	def test_get_problem_data(self):
-		data = OnlineJudje.get_problem_data('1000')
-		self.assertEqual(data['problem_id'], '1000')
-		self.assertEqual(data['problem_desc'], 'A+B Problem')
-		self.assertEqual(data['test_input'], '1 5')
-		self.assertEqual(data['test_output'], '6')
+		data = OnlineJudje.get_problem_data('1201')
+		self.assertEqual(data['problem_id'], '1201')
+		self.assertEqual(data['problem_desc'], 'Which Day Is It?')
+		tests = list(data['tests'])
+		self.assertEqual(tests[0][0], '16 3 2002\r\n')
+		self.assertEqual(tests[1][0], '1 3 2002\r\n')
 
 	def test_init(self):
 		OnlineJudje.init('1000', '86286AA', 'scala')
