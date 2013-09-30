@@ -74,10 +74,11 @@ def result_table(id):
 
 def check_errors(html):
 	# Check error message from acm.timus.ru
-	reg = '(?<=Red;">).*?(?=</)' # Regex for red text
-	m = re.search(reg, html)
-	if m is not None:
-		raise OnlineJudje(m.group())
+	mpos = html.find('color:Red')
+	if mpos > -1: # Extract red text
+		spos = html.find('>', mpos) + 1
+		epos = html.find('</', spos)
+		raise OnlineJudje(html[spos:epos])
 
 	
 
