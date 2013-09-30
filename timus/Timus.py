@@ -1,6 +1,7 @@
 
 from os import path
 
+from timus.Conf import Conf
 from timus.Exceptions import CompilationError, SourceFileNotFound, TestFileNotFound, WrongParams
 from timus.Logger import Log
 from timus.OnlineJudje import submit, init
@@ -17,12 +18,20 @@ def main(argv):
 	ret = RetCode.UnknownError
 
 	# Do action
-	if opts.opt.action == 'list':
+	if opts.action == 'list':
 		show_lang_list()
-	if opts.opt.action == 'init':
+
+	elif opts.action == 'init':
 		opts.need_args('problem')
 		opts.need_opts('id')
 		init(opts.opt.problem, opts.opt.id, opts.opt.lang)
+
+	elif opts.action == 'setdef':
+		opts.save_as_grobal()
+
+	elif opts.action == 'reset':
+		Conf().reset()
+
 	else:
 		opts.need_args('filename')
 
@@ -34,13 +43,13 @@ def main(argv):
 		prog = TimusProgram(opts.opt.filename, opts.opt.lang)
 		opts.opt.lang = prog.lang # :C
 
-		if opts.opt.action == "run":
+		if opts.action == "run":
 			ret = prog.run(cmd=opts.opt.cmd.split(' '))
 
-		elif opts.opt.action == "build":
+		elif opts.action == "build":
 			ret = prog.compile(force=True)
 
-		elif opts.opt.action == "test":
+		elif opts.action == "test":
 			opts.need_opts('tests')
 			if path.exists(opts.opt.tests):
 				if (prog.compile(force=opts.opt.force)):
@@ -52,7 +61,7 @@ def main(argv):
 			else:
 				raise TestFileNotFound(opts.opt.tests)
 
-		elif opts.opt.action == "submit":
+		elif opts.action == "submit":
 			opts.need(['filename'], 'id', 'problem')
 			submit(opts.opt.id, opts.opt.problem, opts.opt.filename, opts.opt.lang)
 

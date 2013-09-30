@@ -15,7 +15,7 @@ class TestOptions(unittest.TestCase):
 						   "-r", "run_cmd"])
 		opts.need_args('filename') 
 		opts.need_opts('run_count', 'tests', 'lang')
-		self.assertEqual(opts.opt.action, "run")
+		self.assertEqual(opts.action, "run")
 		self.assertEqual(opts.opt.filename, "source.cpp")
 		self.assertEqual(opts.opt.force, True)
 		self.assertEqual(opts.opt.run_count, 5)

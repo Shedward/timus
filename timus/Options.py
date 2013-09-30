@@ -2,6 +2,7 @@
 from optparse import OptionParser
 from os import path
 
+from timus.Conf import Conf
 from timus.Exceptions import WrongParams
 from timus.Logger import Log
 
@@ -27,6 +28,7 @@ def _str2bytes(val):
 
 class Options:
 	opt = None
+	action = None
 
 	def _init_parser(self):
 		HELP_MESSAGE = """
@@ -44,6 +46,9 @@ class Options:
 		"""
 
 		self.parser = OptionParser(usage=HELP_MESSAGE)
+
+		defopts = Conf().read('defopts')
+		self.parser.set_defaults(**defopts)
 
 		self.parser.add_option("-t", "--tests", action="store",
 			type="string", dest="tests",
@@ -101,12 +106,13 @@ class Options:
 			help="Problem num.", dest="problem")
 
 	def __init__(self, argv):
+		# Append user defined.
 		self._init_parser()
 		(self.opt, self.args) = self.parser.parse_args(argv)
 
 		# Define action
 		if len(self.args) > 0:
-			setattr(self.opt, 'action', self.args[0])
+			self.action = self.args[0]
 			self.args = self.args[1:]
 		else:
 			raise WrongParams("Action not defined.")
@@ -149,3 +155,6 @@ class Options:
 			self.opt.tests = path.splitext(self.opt.filename)[0] + ".tests"
 		else:
 			raise WrongParams("Option '{0}' is not defined.".format(name))
+
+	def save_as_grobal(self):
+		Conf().write('defopts', vars(self.opt))
