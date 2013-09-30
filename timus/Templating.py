@@ -32,7 +32,7 @@ Language: {lang_str} ({lang_descr})"""
 		src = srcf.read()
 
 	header = _add_to_each_line(TEMPL.format(**args), comment)
-	with open(outfn, 'w+') as out:
+	with open(outfn, 'w') as out:
 		out.write("\n")
 		out.write(header)
 		out.write("\n")
@@ -42,7 +42,7 @@ Language: {lang_str} ({lang_descr})"""
 	# Generate tests file
 	tests = gen_tests_file(args)
 	testsfn = path.splitext(outfn)[0] + '.tests'
-	with open(testsfn, 'w+') as testsf:
+	with open(testsfn, 'w') as testsf:
 		testsf.write(tests)
 
 REGEX = {
