@@ -19,10 +19,10 @@ class Conf(object):
 			conf.write('{"defopts": {}}')
 
 	def write(self, name, val):
-		with open(self.filename, 'r+') as conf:
+		with open(self.filename, 'r') as conf:
 			data = json.load(conf)
 			data[name] = val
-			conf.seek(0)
+		with open(self.filename, 'w') as conf:
 			json.dump(data, conf, sort_keys=True,
 				indent=4, separators=(',', ': '))
 
