@@ -85,7 +85,7 @@ class GPP11(Compiler):
 	def __init__(self):
 		super(GPP11, self).__init__("g++", "{base}")
 		self.add_args(r"-static -fno-strict-aliasing "
-		              r"-DONLINE_JUDGE -lm -s -x c++ -std=c11 -O2 "
+		              r"-DONLINE_JUDGE -lm -s -x c++ -std=c++0x -O2 "
 		              r"-o {base} {file}")
 
 
