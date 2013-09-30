@@ -58,22 +58,22 @@ Usage example
 -----
 1. Set your default lang and JudjeID:
 
-    timus setdef -lgcc -i8658AV
+    `timus setdef -lgcc -i86583AV`
 
 2. Make template of any problem:
 
-    timus init 1000
+    `timus init 1000`
 
 3. Open 1000.A+B_Problem.c and write your solution
 4. Test your solution with example test:
 
-    timus test 1000.A+B_Problem.c
+    `timus test 1000.A+B_Problem.c`
 
 5. Add your tests to `1000.A+B_Problem.tests` and test your program again.
 
 6. If program pass all tests submit your solution: 
     
-    timus submit 1000.A+B_Problem.c -p1000
+    `timus submit 1000.A+B_Problem.c -p1000`
 
 7. If not Acceptet go to 3.
 
