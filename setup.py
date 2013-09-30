@@ -17,8 +17,8 @@ setup(
 	install_requires=[
 		'psutil >= 0.6.1',
 		'PyYAML >= 3.10',
-		'requests >= 1.1.0-1',
-		'lxml >= 3.1.0-1',
+		'requests >= 1.1.0',
+		'lxml >= 3.1.0',
 		'appdirs >= 1.2.0'
 	],
 	include_package_data=True
