@@ -320,4 +320,6 @@ def TimusProgram(source, lang=None):
 	if lang is None:
 		lang = autodetect_lang(source)
 
-	return program(lang)(source)
+	prog = program(lang)(source)
+	prog.lang = lang
+	return prog
