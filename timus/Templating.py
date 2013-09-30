@@ -5,20 +5,27 @@ def _add_to_each_line(src, add):
 	return "\n".join([add + l for l in src.split('\n')])
 
 def gen_tests_file(args):
-	TESTS_TMPL = """
+	# Header
+	res = """
 # Problem: {problem_id}. {problem_desc}
 # Url: {url}
 # Author: {name} ({id})
+""".format(**args)
 
-- Sample: 
+	# Test intems
+	TEST_TMPL="""
+- Sample{i}: 
     in: |
-{test_input}
+{inp}
     out: |
-{test_output}
-"""
-	args['test_input'] = _add_to_each_line(args['test_input'], ' '*8)
-	args['test_output'] = _add_to_each_line(args['test_output'], ' '*8)
-	return TESTS_TMPL.format(**args)
+{out}"""
+	i = 0
+	for inp, out in args['tests']:
+		i += 1
+		inp = _add_to_each_line(inp, ' '*8)
+		out = _add_to_each_line(out, ' '*8)
+		res += TEST_TMPL.format(i=i, inp=inp, out=out)
+	return res
 
 
 def template(srcfn, outfn, args, comment):

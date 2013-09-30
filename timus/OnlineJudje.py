@@ -155,13 +155,14 @@ def get_problem_data(problem):
 	check_errors(lxml.html.tostring(html).decode())
 
 	problem_title = html.xpath('//h2[@class="problem_title"]/text()')[0]
-	(problem_id, problem_desc) = map(str.strip, problem_title.split('.'))
+	(problem_id, problem_desc) = map(str.strip, problem_title.split('.', 1))
 	res['problem_id'] = problem_id
 	res['problem_desc'] = problem_desc
 
-	inp, out = html.xpath('//pre[@class="intable"]/text()')
-	res['test_input'] = inp
-	res['test_output'] = out
+	tests_table = html.xpath('//pre[@class="intable"]/text()')
+	tests = zip(tests_table[::2], tests_table[1::2])
+
+	res['tests'] = tests
 	return res
 
 def comment_by_ext(ext):
