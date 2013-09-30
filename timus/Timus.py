@@ -62,7 +62,7 @@ def main(argv):
 				raise TestFileNotFound(opts.opt.tests)
 
 		elif opts.action == "submit":
-			opts.need(['filename'], 'id', 'problem')
+			opts.need_opts('id', 'problem')
 			submit(opts.opt.id, opts.opt.problem, opts.opt.filename, opts.opt.lang)
 
 		else:
