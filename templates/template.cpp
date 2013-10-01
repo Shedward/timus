@@ -3,6 +3,6 @@
 
 int main()
 {
-   std::cout << "Hello!";
-   return 0;
+	std::cout << "Hello!";
+	return 0;
 }
