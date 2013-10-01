@@ -1,5 +1,6 @@
 
 from os import path
+import re
 
 def _add_to_each_line(src, add):
 	return "\n".join([add + l for l in src.split('\n')])
@@ -52,10 +53,18 @@ Language: {lang_str} ({lang_descr})"""
 	with open(testsfn, 'w') as testsf:
 		testsf.write(tests)
 
-REGEX = {
-	"lang":"Language: (\w{2,5})",
-	"problem":"Problem: (\d{4})\.",
-	"author": "Author: \(\w+\) (\w{6})"
-}
 def extract(filename):
-	pass
+	with open(filname, 'r') as srcf:
+		text = srcf.read()
+
+	REGEX = [
+		("lang", "Language:\s*([\w+#]*)\s"),
+		("problem", "Problem: (\d{4})\."),
+		("author", "Author: .* \((\w{7})\)")
+	]
+
+	res = {}
+	for k, reg in REGEXS:
+		m = re.search(reg, text)
+		if m is not None and len(m.groups()) > 0:
+			res[k] = m.groups()[0]

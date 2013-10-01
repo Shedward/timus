@@ -1,5 +1,5 @@
 
-from optparse import OptionParser
+from optparse import OptionParser, Values
 from os import path
 
 from timus.Conf import Conf
@@ -27,7 +27,10 @@ def _str2bytes(val):
 	return res
 
 class Options:
-	opt = None
+	cmdopts = {}
+	defopts = {}
+	fileopts = {}
+	opts = {}
 	action = None
 
 	def _init_parser(self):
@@ -47,9 +50,6 @@ class Options:
 
 		self.parser = OptionParser(usage=HELP_MESSAGE)
 
-		defopts = Conf().read('defopts')
-		self.parser.set_defaults(**defopts)
-
 		self.parser.add_option("-t", "--tests", action="store",
 			type="string", dest="tests",
 			help="Specify tests filename. By default "
@@ -57,14 +57,13 @@ class Options:
 
 		self.parser.add_option("-r", "--run", action="store",
 			type="string", dest="cmd",
-			help="Specify pattern for 'run' action.",
-			default="{bin}")
+			help="Specify pattern for 'run' action.")
 
 		self.parser.add_option("-f", "--force", action="store_true",
 			dest="force", help="Force recompile.")
 
 		self.parser.add_option("--ll","--log-lvl", action="store",
-			dest="log_lvl", default="msg",
+			dest="log_lvl",
 			help="Set logging level:\n err - show "
 			"only error messages,\n msg - show "
 			"basic messages (default),\n"
@@ -91,8 +90,7 @@ class Options:
 			help="Specify amount of runing. "
 			"More runs, more accurate "
 			"the measurements.",
-			dest="run_count", type="int",
-			default=1
+			dest="run_count", type="int"
 			)
 
 		self.parser.add_option("-l", "--lang", action="store",
@@ -107,30 +105,60 @@ class Options:
 
 	def __init__(self, argv):
 		# Append user defined.
+		self.defopts = Conf().read('defopts')
+
 		self._init_parser()
-		(self.opt, self.args) = self.parser.parse_args(argv)
+		(opts, args) = self.parser.parse_args(argv)
+
+		self.cmdopts = vars(opts)
+
+		self._update()
 
 		# Define action
-		if len(self.args) > 0:
-			self.action = self.args[0]
-			self.args = self.args[1:]
+		if len(args) > 0:
+			self.action = args[0]
+			self.args = args[1:]
 		else:
 			raise WrongParams("Action not defined.")
 
 		# Parce special options
-		if self.opt.mem_limit is not None:
-			self.opt.mem_limit = _str2bytes(self.opt.mem_limit)
+		if 'mem_limit' in self.opts:
+			self.opts['mem_limit'] = _str2bytes(self.opts['mem_limit'])
 
-		if self.opt.log_lvl is not None:
+		if 'log_lvl' in self.opts:
 				LOG_LVL_OPTS = {
 					"err": Log.Err,
 					"msg": Log.Msg,
 					"vrb": Log.Vrb
 					}
-				if self.opt.log_lvl in LOG_LVL_OPTS:
-					self.opt.log_lvl  = LOG_LVL_OPTS[self.opt.log_lvl]
+				if self.opts['log_lvl'] in LOG_LVL_OPTS:
+					self.opts['log_lvl']  = LOG_LVL_OPTS[self.opts['log_lvl']]
 				else:
-					raise WrongParams("Wrong log level: {0}.".format(self.opt.log_lvl))
+					raise WrongParams("Wrong log level: {0}.".format(self.opts['log_lvl']))
+
+	def __call__(self, name):
+		if name not in self.opts:
+			self._try_define(name)
+		return self.opts[name]
+
+	def _update(self):
+		def upd(d1, d2):
+			""" Apply d2 to d1, rewrite if elem of dic2 is not None """
+			for k, v in d2.items():
+				if v is not None:
+					d1[k] = v
+
+		self.opts = {}
+		upd(self.opts, self.defopts)
+		upd(self.opts, self.fileopts)
+		upd(self.opts, self.cmdopts)
+
+	def update_file_opts(self, dict):
+		# Infile opts must overwrite def opts
+		# but be overwriten by command line opts
+		self.fileopts.update(dict)
+		self._update()
+
 
 	def need_args(self, *arg_names):
 		if len(self.args) < len(arg_names):
@@ -139,22 +167,25 @@ class Options:
 			raise WrongParams("Too much args.")
 		else:
 			for name, val in zip(arg_names, self.args):
-				setattr(self.opt, name, val)
-
-	def need_opts(self, *opts_names):
-		for name in opts_names:
-			if not hasattr(self.opt, name):
-				raise Exception("Option '{0}' is not exist.".format(name))
-
-			if getattr(self.opt, name) is None:
-				self._try_define(name)
+				self.opts[name] = val				
 
 	def _try_define(self, name):
-		if name == 'tests' and self.opt.tests is None:
+		DEFS = {
+			'cmd': '{bin}',
+			'log_lvl': Log.Msg,
+			'run_count': 1,
+			'force': False,
+			'lang': None,
+			'time_limit': None,
+			'mem_limit': None
+		}
+		if name == 'tests':
 			self.need_args('filename')
-			self.opt.tests = path.splitext(self.opt.filename)[0] + ".tests"
+			self.opts['tests'] = path.splitext(self.opts['filename'])[0] + ".tests"
+		elif name in DEFS:
+			self.opts[name] = DEFS[name]
 		else:
 			raise WrongParams("Option '{0}' is not defined.".format(name))
 
 	def save_as_grobal(self):
-		Conf().write('defopts', vars(self.opt))
+		Conf().write('defopts', self.opts)

@@ -13,7 +13,7 @@ from timus.TimusCompilers import TimusProgram, show_lang_list
 def main(argv):
 	opts = Options(argv)
 
-	Log(opts.opt.log_lvl)
+	Log(opts('log_lvl'))
 
 	ret = RetCode.UnknownError
 
@@ -23,8 +23,7 @@ def main(argv):
 
 	elif opts.action == 'init':
 		opts.need_args('problem')
-		opts.need_opts('id')
-		init(opts.opt.problem, opts.opt.id, opts.opt.lang)
+		init(opts('problem'), opts('id'), opts('lang'))
 
 	elif opts.action == 'setdef':
 		opts.save_as_grobal()
@@ -36,36 +35,35 @@ def main(argv):
 		opts.need_args('filename')
 
 		# Check sourcefile existance and type
-		if not path.exists(opts.opt.filename):
-			raise SourceFileNotFound(opts.opt.filename)
+		if not path.exists(opts('filename')):
+			raise SourceFileNotFound(opts('filename'))
 
 		# Detect language if not defined
-		prog = TimusProgram(opts.opt.filename, opts.opt.lang)
-		opts.opt.lang = prog.lang # :C
+		prog = TimusProgram(opts('filename'), opts('lang'))
+		opts.update_file_opts({'lang': prog.lang})
 
+		# Do program's action.
 		if opts.action == "run":
-			ret = prog.run(cmd=opts.opt.cmd.split(' '))
+			ret = prog.run(cmd=opts('cmd').split(' '))
 
 		elif opts.action == "build":
 			ret = prog.compile(force=True)
 
 		elif opts.action == "test":
-			opts.need_opts('tests')
-			if path.exists(opts.opt.tests):
-				if (prog.compile(force=opts.opt.force)):
-					ret = prog.test(opts.opt.tests, run_count=opts.opt.run_count,
-					                time_limit=opts.opt.time_limit,
-					                mem_limit=opts.opt.mem_limit)
+			if path.exists(opts('tests')):
+				if (prog.compile(force=opts('force'))):
+					ret = prog.test(opts('tests'), run_count=opts('run_count'),
+					                time_limit=opts('time_limit'),
+					                mem_limit=opts('mem_limit'))
 				else:
 					raise CompilationError(ret)
 			else:
-				raise TestFileNotFound(opts.opt.tests)
+				raise TestFileNotFound(opts('tests'))
 
 		elif opts.action == "submit":
-			opts.need_opts('id', 'problem')
-			submit(opts.opt.id, opts.opt.problem, opts.opt.filename, opts.opt.lang)
+			submit(opts('id'), opts('problem'), opts('filename'), opts('lang'))
 
 		else:
-			raise WrongParams("Wrong action: '{0}".format(opts.opt.action))
+			raise WrongParams("Wrong action: '{0}".format(opts('action')))
 
 	return ret
