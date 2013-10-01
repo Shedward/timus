@@ -7,6 +7,7 @@ from timus.Logger import Log
 from timus.OnlineJudje import submit, init
 from timus.Options import Options
 from timus.RetCodes import RetCode
+from timus.Templating import extract
 from timus.TimusCompilers import TimusProgram, show_lang_list
 
 
@@ -37,6 +38,9 @@ def main(argv):
 		# Check sourcefile existance and type
 		if not path.exists(opts('filename')):
 			raise SourceFileNotFound(opts('filename'))
+
+		# Get opts stored in sourcefile.
+		opts.update_file_opts(extract(opts('filename')))
 
 		# Detect language if not defined
 		prog = TimusProgram(opts('filename'), opts('lang'))

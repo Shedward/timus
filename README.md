@@ -56,7 +56,7 @@ Requirements
 
 Usage example
 -----
-1. Set your default lang and JudjeID:
+0. Optionaly you can set default lang and JudjeID:
 
     `timus setdef -lgcc -i86583AV`
 
@@ -73,7 +73,7 @@ Usage example
 
 6. If program pass all tests submit your solution: 
     
-    `timus submit 1000.A+B_Problem.c -p1000`
+    `timus submit 1000.A+B_Problem.c -p`
 
 7. If not Acceptet go to 3.
 
@@ -198,3 +198,17 @@ Also you can use external file if input is too big for tests file:
     - Many numbers:
         in file: 1 to 10.txt
         out: 55
+
+Options in source file
+----------
+
+Every file created with init have commented header like this:
+
+    Problem: <problem>. A+B Problem
+    Url: http://acm.timus.ru/problem.aspx?space=1&num=1000
+    Author: Name (<id>)
+    Language: <lang> (Haskell 7.6.1)
+
+from this header timus parse option like judje id and problem num,
+so you don't need type -l... or -p.... options for command like submit
+or test.

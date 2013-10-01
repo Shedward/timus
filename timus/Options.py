@@ -153,10 +153,10 @@ class Options:
 		upd(self.opts, self.fileopts)
 		upd(self.opts, self.cmdopts)
 
-	def update_file_opts(self, dict):
+	def update_file_opts(self, dic):
 		# Infile opts must overwrite def opts
 		# but be overwriten by command line opts
-		self.fileopts.update(dict)
+		self.fileopts.update(dic)
 		self._update()
 
 
@@ -167,7 +167,8 @@ class Options:
 			raise WrongParams("Too much args.")
 		else:
 			for name, val in zip(arg_names, self.args):
-				self.opts[name] = val				
+				self.cmdopts[name] = val
+			self._update()			
 
 	def _try_define(self, name):
 		DEFS = {

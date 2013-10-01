@@ -54,13 +54,13 @@ Language: {lang_str} ({lang_descr})"""
 		testsf.write(tests)
 
 def extract(filename):
-	with open(filname, 'r') as srcf:
+	with open(filename, 'r') as srcf:
 		text = srcf.read()
 
-	REGEX = [
+	REGEXS = [
 		("lang", "Language:\s*([\w+#]*)\s"),
 		("problem", "Problem: (\d{4})\."),
-		("author", "Author: .* \((\w{7})\)")
+		("id", "Author: .* \((\w{7})\)")
 	]
 
 	res = {}
@@ -68,3 +68,4 @@ def extract(filename):
 		m = re.search(reg, text)
 		if m is not None and len(m.groups()) > 0:
 			res[k] = m.groups()[0]
+	return res
