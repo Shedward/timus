@@ -1,40 +1,40 @@
 class TimusError(Exception):
-	prefix = 'Timus error:'
-	postfix = ''
+    prefix = 'Timus error:'
+    postfix = ''
 
-	def __init__(self, *args):
-		self.args = args
+    def __init__(self, *args):
+        self.args = args
 
-	def msg(self):
-		return str(self.prefix) + '\n\t' \
-			   + ' '.join(map(str, self.args)) \
-			   + '\n\n' + self.postfix
+    def msg(self):
+        return str(self.prefix) + '\n\t' \
+               + ' '.join(map(str, self.args)) \
+               + '\n\n' + self.postfix
 
 
 
 class NetworkError(TimusError):
-	prefix = 'Network error:'
+    prefix = 'Network error:'
 
 class OnlineJudje(TimusError):
-	prefix = 'Online judje error:'
+    prefix = 'Online judje error:'
 
 class WrongParams(TimusError):
-	prefix = 'Wrong parameters:'
-	postfix = "Use timus -h for help"
+    prefix = 'Wrong parameters:'
+    postfix = "Use timus -h for help"
 
 class CompilationError(TimusError):
-	prefix = 'Compiler return code:'
+    prefix = 'Compiler return code:'
 
 class SourceFileNotFound(TimusError):
-	prefix = 'Source file not found:'
+    prefix = 'Source file not found:'
 
 class TestFileNotFound(TimusError):
-	prefix = 'Test file not found:'
-	postfix = 'Use -t option to define custom tests file'
+    prefix = 'Test file not found:'
+    postfix = 'Use -t option to define custom tests file'
 
 class WrongLang(TimusError):
-	prefix = 'Wrong language:'
-	postfix = "Use 'timus list' to see all suported languages for -l option."
+    prefix = 'Wrong language:'
+    postfix = "Use 'timus list' to see all suported languages for -l option."
 
 class NotSupportedExt(TimusError):
-	prefix = 'Not supported extension:'
+    prefix = 'Not supported extension:'
