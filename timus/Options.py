@@ -122,10 +122,10 @@ class Options:
             raise WrongParams("Action not defined.")
 
         # Parce special options
-        if 'mem_limit' in self.opts:
+        if 'mem_limit' in self.opts and isinstance(self.opts['mem_limit'], str):
             self.opts['mem_limit'] = _str2bytes(self.opts['mem_limit'])
 
-        if 'log_lvl' in self.opts:
+        if 'log_lvl' in self.opts and isinstance(self.opts['log_lvl'], str):
                 LOG_LVL_OPTS = {
                     "err": Log.Err,
                     "msg": Log.Msg,
