@@ -34,7 +34,7 @@ class CLPP(Compiler):
 
 class clppProgram(CompilingProgram):
     def __init__(self, sourcefn):
-        super(clProgram, self).__init__(source_fn=sourcefn, compiler=CLPP())
+        super(clppProgram, self).__init__(source_fn=sourcefn, compiler=CLPP())
 
 
 class GCC(Compiler):
