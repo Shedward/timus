@@ -22,7 +22,8 @@ class TestSubstitude(unittest.TestCase):
 
 class TestCompiler(unittest.TestCase):
     def setUp(self):
-        self.comp = timus.Compiler.Compiler("dir {dir}", "{base}")
+        self.comp = timus.Compiler.Compiler("dir", "{base}")
+        self.comp.add_args('{dir}')
 
     def test_compile(self):
         fn = "file.ext"
@@ -31,7 +32,7 @@ class TestCompiler(unittest.TestCase):
 
     def test_add_args(self):
         self.comp.add_args("-wrong /opt")
-        self.assertEqual(self.comp.args, " -wrong /opt")
+        self.assertEqual(self.comp.args, ["{dir}","-wrong", "/opt"])
         self.assertNotEqual(self.comp.compile("file.ext"), 0)
 
 
