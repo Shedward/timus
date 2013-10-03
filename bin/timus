@@ -2,6 +2,8 @@
 
 from sys import argv
 
+from yaml.parser import ParserError
+
 from timus.Timus import main
 from timus.Exceptions import TimusError
 from timus.RetCodes import RetCode
@@ -12,5 +14,10 @@ if __name__ == '__main__':
 	except TimusError as e:
 		ret = RetCode.Error
 		print(e.msg())
+	except ParserError as e:
+		ret = RetCode.Error
+		print("Wrong tests file\n")
+		for arg in e.args:
+			print(arg)
 
 	exit(ret)
