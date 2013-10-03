@@ -8,7 +8,7 @@ import lxml.html
 from requests import post
 
 from timus.Exceptions import NetworkError, OnlineJudje
-from timus.Templating import template
+from timus.Templating import gen_source_file, gen_tests_file
 from timus.TimusCompilers import lang_description, ext_by_lang
 from timus.Logger import Log
 
@@ -189,11 +189,18 @@ def init(problem, id, lang, templatefn=None, filename=None):
 
     ext = ext_by_lang(lang)
     comment_start = comment_by_ext(ext)
+
     if templatefn is None:
         templatefn = pkg_resources.resource_filename('templates','template.'+ ext)
     if filename is None:
         filename = (data['problem_id']+'.'+data['problem_desc'] + '.' + ext).replace(' ', '_')
-    template(templatefn, filename, data, comment_start)
+
+    testsfn = path.splitext(filename)[0] + '.tests'
+    data['testsfn'] = testsfn
+
+    gen_source_file(templatefn, filename, data, comment_start)
+    gen_tests_file(testsfn, data)
+
     LOG(Log.Msg, " :: Сreated")
     LOG(Log.Msg, "\t"+filename)
-    LOG(Log.Msg, "\t"+path.splitext(filename)[0] + '.tests')
+    LOG(Log.Msg, "\t"+testsfn)
