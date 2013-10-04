@@ -205,10 +205,7 @@ def init(problem, id, lang, templatefn=None, filename=None):
         LOG(Log.Msg, "\t"+filename+' created.')
 
     if path.exists(testsfn):
-        LOG(Log.Msg, "\t"+filename+' exist.')
+        LOG(Log.Msg, "\t"+testsfn+' exist.')
     else:
         gen_tests_file(testsfn, data)
         LOG(Log.Msg, "\t"+testsfn+' created.')
-
-    
-    LOG(Log.Msg, "\t"+testsfn)
