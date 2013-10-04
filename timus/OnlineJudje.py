@@ -198,9 +198,17 @@ def init(problem, id, lang, templatefn=None, filename=None):
     testsfn = path.splitext(filename)[0] + '.tests'
     data['testsfn'] = testsfn
 
-    gen_source_file(templatefn, filename, data, comment_start)
-    gen_tests_file(testsfn, data)
+    if path.exists(filename):
+        LOG(Log.Msg, "\t"+filename+' exist.')
+    else:
+        gen_source_file(templatefn, filename, data, comment_start)
+        LOG(Log.Msg, "\t"+filename+' created.')
 
-    LOG(Log.Msg, " :: Сreated")
-    LOG(Log.Msg, "\t"+filename)
+    if path.exists(testsfn):
+        LOG(Log.Msg, "\t"+filename+' exist.')
+    else:
+        gen_tests_file(testsfn, data)
+        LOG(Log.Msg, "\t"+testsfn+' created.')
+
+    
     LOG(Log.Msg, "\t"+testsfn)
