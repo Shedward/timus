@@ -1,7 +1,7 @@
 timus
 =====
 
-Little timus client with simple input/output testing tool.
+Little acm.timus.ru client with simple input/output testing tool.
 Lines commented with '//' is not realize yet.
 
 Installation
