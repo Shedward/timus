@@ -1,0 +1,11 @@
+{
+	"cmd": ["timus", "test", "$file"],
+	"variants" : [
+		{
+			"name": "Run",
+			"cmd": ["timus", "submit", "$file"]
+		}
+
+	]
+}
+
