@@ -2,6 +2,7 @@
 from io import IOBase
 from os import path
 from subprocess import PIPE
+from difflib import ndiff
 
 import yaml
 
@@ -128,13 +129,10 @@ class Program(object):
 
             except WrongOutput:
                 LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
-                LOG(Log.Err, "{0}: error: Test '{1}' failed."
+                LOG(Log.Err, "{0}: error: Test '{1}' failed:"
                              .format(self.source(), descr))
-                LOG(Log.Err, "Expected:\n"
-                             "'{0}'\n"
-                             "Recived:\n"
-                             "'{1}'"
-                             .format(out.decode(), recived.decode()))
+                LOG(Log.Err, ' ' + '\n '.join(ndiff(out.decode().splitlines(),
+                                                    recived.decode().splitlines())))
                 ret = RetCode.WrongOutput
 
             except TimeLimitExceeded:
