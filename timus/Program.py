@@ -79,7 +79,7 @@ class Program(object):
         return True
 
     def test(self, tests_file, run_count=1, mem_limit=None,
-               time_limit=None):
+               time_limit=None, diff_out=False):
         """ Run program with tests.
 
         Tests should be list of [(<descr>, {in:"<in>", out:"<out>"})]
@@ -131,8 +131,12 @@ class Program(object):
                 LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
                 LOG(Log.Err, "{0}: error: Test '{1}' failed:"
                              .format(self.source(), descr))
-                LOG(Log.Err, ' ' + '\n '.join(ndiff(out.decode().splitlines(),
-                                                    recived.decode().splitlines())))
+                if (diff_out):
+                    LOG(Log.Err, ' ' + '\n '.join(ndiff(out.decode().splitlines(),
+                                                        recived.decode().splitlines())))
+                else:
+                    LOG(Log.Err, "Expected: ---------- \n'{0}'\n\nRecived: ----------\n'{1}'\n ------------"
+                                 .format(out.decode(), recived.decode()))
                 ret = RetCode.WrongOutput
 
             except TimeLimitExceeded:
@@ -211,8 +215,8 @@ class CompilingProgram(Program):
                         mem_limit=mem_limit)
 
     def test(self, tests, run_count=1, mem_limit=None,
-               time_limit=None):
+               time_limit=None, diff_out=False):
         if self.is_compiled or self.compile():
             return super(CompilingProgram, self).test(tests, run_count, mem_limit,
-                                                      time_limit)
+                                                      time_limit, diff_out)
 

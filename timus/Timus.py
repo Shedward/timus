@@ -58,7 +58,8 @@ def main(argv):
                 if (prog.compile(force=opts('force'))):
                     ret = prog.test(opts('tests'), run_count=opts('run_count'),
                                     time_limit=opts('time_limit'),
-                                    mem_limit=opts('mem_limit'))
+                                    mem_limit=opts('mem_limit'),
+                                    diff_out=opts('diff_out'))
                 else:
                     raise CompilationError(ret)
             else:

@@ -103,6 +103,10 @@ class Options:
         self.parser.add_option('-p', "--problem", action="store",
             help="Problem num.", dest="problem")
 
+        self.parser.add_option('-d', "--diff", action="store_true",
+            help="Show diff between expected and recived for failed tests.",
+            dest="diff_out")
+
     def __init__(self, argv):
         # Append user defined.
         self.defopts = Conf().read('defopts')
@@ -178,7 +182,8 @@ class Options:
             'force': False,
             'lang': None,
             'time_limit': None,
-            'mem_limit': None
+            'mem_limit': None,
+            'diff_out': False
         }
         if name == 'tests':
             self.need_args('filename')
