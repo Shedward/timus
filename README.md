@@ -79,66 +79,49 @@ Usage example
 
 Usage
 -----
-    Usage: 
-    timus [OPTIONS] <action> <filename>
-    Use one of the action:
-        run     - Run program using by default pattern "{bin}"
-                  where {bin} is name of executable file.
-                  Use -c to change patern.
-        build - Compile source file. For interpret languages do nothing.
-                  Use -f to force recompile.
-        test    - Test program. Searching for <source>.tests by default.
-                  Use -t to specify tests file.
-        submit  - Send solution to acm.timus.ru server.
-        setdef  - Set default option values. Reset all previous opts.
-        reset   - Reset configs.
-
-
-
-    List of compilers/interpreters for -l option:
-        c# - Visual C#
-        cl    - Visual C 2010
-        cl - Visual C 2010
-        cl++ - Visual C 2010
-        g++ - G++ 4.7.2
-        g++11 - G++ 4.7.2 with C++11
-        gcc - GCC 4.7.2
-        gcc11 - GCC 4.7.2 with C11
-        ghc - Haskell 7.6.1
-        go - Go 1.7
-        java - Java 1.7
-        mono - Mono 3.0.7
-        pas - FreePascal 2.4.0
-        py2 - Python 2.7
-        py3 - Python 3.3
-        rb - Ruby 1.9.3
-        vb - VB.NET 2010
-
-
+                timus [OPTIONS] <action> <filename>
+                Use one of the action:
+                    run     - Run program using by default pattern "$TERM -e {bin}"
+                              where {bin} is name of executable file.
+                              Use -c to change patern.
+                    build - Compile source file. With interpret languages do nothing.
+                              Use -f to force recompile.
+                    test    - Test program. Searching for <source>.tests by default.
+                              Use -t to specify tests file.
+                    list    - Show list of all languages for -l option.
+                    submit  - Send solution to acm.timus.ru server. Need defined -i and -p opts.
+            
 
     Options:
       -h, --help            show this help message and exit
       -t TESTS, --tests=TESTS
                             Specify tests filename. By default searching for
                             <source_file>.tests.
-      -r CMD, --run=CMD     Specify pattern for 'run' action
+      -r CMD, --run=CMD     Specify pattern for 'run' action.
       -f, --force           Force recompile.
-      --log-lvl=LOG_LVL     Set logging level:  err - show only error messages,
+      --ll=LOG_LVL, --log-lvl=LOG_LVL
+                            Set logging level:  err - show only error messages,
                             msg - show basic messages (default),  vrb - show every
-                            execute command
-      --time-limit=TIME_LIMIT
+                            execute command.
+      --tl=TIME_LIMIT, --time-limit=TIME_LIMIT
                             Specify time limit in seconds. If program running
                             longer it will be terminated with 'Time limit
-                            exceeded' error. Using in test action
-      --mem-limit=MEM_LIMIT
+                            exceeded' error. Using in test action.
+      --ml=MEM_LIMIT, --mem-limit=MEM_LIMIT
                             Specify maximum memory usage in kbytesalso you can use
                             notation like 1K, 5.5M, 0.1g. If program exceed the
                             limit it will be terminated with 'Memory limit
                             exceeded' error. Using in test action.
       -c RUN_COUNT, --run-count=RUN_COUNT
-                            Specify amount of runing. More runs, the more accurate
-                            the measurements
+                            Specify amount of runing. More runs, more accurate the
+                            measurements.
       -l LANG, --lang=LANG  Specify compiler/language dialect.
+      -i ID, --id=ID        Specify JudjeID.
+      -p PROBLEM, --problem=PROBLEM
+                            Problem num.
+      -d, --diff            Show diff between expected and recived for failed
+                            tests.
+
 
 ###Examples:
 ####Local:
