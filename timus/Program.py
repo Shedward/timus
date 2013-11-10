@@ -128,7 +128,8 @@ class Program(object):
                     raise WrongOutput()
 
             except WrongOutput:
-                LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
+                LOG(Log.Msg, "  {0}: fail: {1} [{2}s, {3:0.1f}K]"
+                             .format(i, descr, max_time, max_mem / 1024))
                 LOG(Log.Err, "{0}: error: Test '{1}' failed:"
                              .format(self.source(), descr))
                 if (diff_out):
@@ -140,13 +141,15 @@ class Program(object):
                 ret = RetCode.WrongOutput
 
             except TimeLimitExceeded:
-                LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
+                LOG(Log.Msg, "  {0}: fail: {1} [{2:0.1f}K]"
+                             .format(i, descr, max_mem / 1024))
                 LOG(Log.Err, "{0}: error: Time limit {1}s exceeded."
                              .format(self.source(), time_limit))
                 ret = RetCode.TimeLimitExceeded
 
             except MemoryLimitExceeded:
-                LOG(Log.Msg, "  {0}: fail: {1}".format(i, descr))
+                LOG(Log.Msg, "  {0}: fail: {1} [{2}s]"
+                             .format(i, descr, max_time))
                 LOG(Log.Err, "{0}: error: Memory limit {1:0.1f}K exceeded."
                              .format(self.source(), mem_limit / 1024))
                 ret = RetCode.MemoryLimitExceeded
