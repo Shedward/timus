@@ -73,7 +73,7 @@ Usage example
 
 6. If program pass all tests submit your solution: 
     
-    `timus submit 1000.A+B_Problem.c -p`
+    `timus submit 1000.A+B_Problem.c`
 
 7. If not Acceptet go to 3.
 
