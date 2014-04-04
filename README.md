@@ -23,6 +23,8 @@ then you can try testing examples in dir:
 
 Troubleshooting.
 ----------------
+If you see error 'ImportError: No module named setuptools" install python3-setuptools
+
 If you see error 'Compillation error' it may mean that you don't have installed gcc, used in test, timus won't need gcc to work, it's only mean than you can't compile and test your cpp program local with gcc.
 
 If you see error 'Python.h not found' it may mean that you don't have installed `pyhon3-dev` package for compiling psutil, also you can install psutil manualy using your package manager.
