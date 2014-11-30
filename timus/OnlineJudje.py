@@ -1,6 +1,5 @@
 
 from os import path
-import re
 from time import sleep
 import pkg_resources
 
@@ -41,16 +40,18 @@ LANG_ID = {
     "vb": 15
 }
 
+
 def send(id, problem, file, lang):
     headers = {
-        "User-Agent":"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:24.0) Gecko/20100101 Firefox/24.0"
+        "User-Agent": """Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:24.0)
+         Gecko/20100101 Firefox/24.0"""
     }
-    
+
     if lang not in LANG_ID:
         raise OnlineJudje("Language {0} not supported.".format(lang))
 
     data = {
-        'Action':'submit',
+        'Action': 'submit',
         'SpaceID': 1,
         'JudgeID': id,
         'Language': LANG_ID[lang],
@@ -58,11 +59,12 @@ def send(id, problem, file, lang):
         'Source': ''
     }
 
-    files = {'SourceFile':open(file, 'r')}
+    files = {'SourceFile': open(file, 'r')}
 
     request = post(url=URL['submit'], data=data, files=files,
                    headers=headers)
     return request
+
 
 def result_table(id):
     html = lxml.html.parse(URL['status'].format(id=id[0:5]))
@@ -72,15 +74,15 @@ def result_table(id):
         data.append([c.text_content() for c in row.getchildren()])
     return data[2:-1]
 
+
 def check_errors(html):
     # Check error message from acm.timus.ru
     mpos = html.find('color:Red')
-    if mpos > -1: # Extract red text
+    if mpos > -1:  # Extract red text
         spos = html.find('>', mpos) + 1
         epos = html.find('</', spos)
         raise OnlineJudje(html[spos:epos])
 
-    
 
 def check_results(id, problem, timeout=1):
     LOG = Log()
@@ -93,12 +95,13 @@ def check_results(id, problem, timeout=1):
         LOG(Log.Vrb, "\t", stat)
     return res
 
+
 def format_msg(result):
     def insert(orig, new, pos):
         return orig[:pos] + new + orig[pos:]
 
     def replace(orig, frm, to):
-        return [to if  x == frm else x for x in orig]
+        return [to if x == frm else x for x in orig]
 
     if len(result) < 9:
         raise ValueError('Not enough elements in result list.')
@@ -114,7 +117,7 @@ def format_msg(result):
 
     msg_tmpl = '''
  RESULTS:
-    Solution: {0} 
+    Solution: {0}
     Time:     {1}
     Author:   {2}
     Problem:  {3}
@@ -129,8 +132,9 @@ def format_msg(result):
     msg = msg_tmpl.format(*rep_res)
 
     # Remove all lines marked with $DEL
-    is_not_have_del = lambda l : l.find('$DEL$') == -1
+    is_not_have_del = lambda l: l.find('$DEL$') == -1
     return '\n'.join(filter(is_not_have_del, msg.split('\n')))
+
 
 def submit(id, problem, file, lang):
     LOG = Log()
@@ -141,10 +145,12 @@ def submit(id, problem, file, lang):
     check_errors(r.text)
     LOG(Log.Msg, format_msg(check_results(id, problem)))
 
+
 def get_name(id):
     html = lxml.html.parse(URL['author'].format(id=id[0:5]))
     name = html.xpath('//h2[@class="author_name"]/text()')[0]
     return name
+
 
 def get_problem_data(problem):
     res = {}
@@ -166,6 +172,7 @@ def get_problem_data(problem):
     res['tests'] = tests
     return res
 
+
 def comment_by_ext(ext):
     if ext in ['cpp', 'c', 'pas', 'cs', 'go', 'java', 'scala']:
         return ' // '
@@ -174,26 +181,29 @@ def comment_by_ext(ext):
     elif ext == 'hs':
         return ' -- '
 
+
 def init(problem, id, lang, templatefn=None, filename=None):
     LOG = Log()
     LOG(Log.Msg, " :: Getting problem")
     data = {
         'name': get_name(id),
-        'id' : id,
-        'lang_str' : lang,
-        'lang_descr' : lang_description(lang)}
+        'id': id,
+        'lang_str': lang,
+        'lang_descr': lang_description(lang)}
     data.update(get_problem_data(problem))
 
-    MSG="\t{problem_id}. {problem_desc}\n\t{url}\n"
+    MSG = "\t{problem_id}. {problem_desc}\n\t{url}\n"
     LOG(Log.Msg, MSG.format(**data))
 
     ext = ext_by_lang(lang)
     comment_start = comment_by_ext(ext)
 
     if templatefn is None:
-        templatefn = pkg_resources.resource_filename('templates','template.'+ ext)
+        templatefn = pkg_resources.resource_filename('templates',
+                                                     'template.' + ext)
     if filename is None:
-        filename = (data['problem_id']+'.'+data['problem_desc'] + '.' + ext).replace(' ', '_')
+        filename = (data['problem_id'] + '.' +
+                    data['problem_desc'] + '.' + ext).replace(' ', '_')
 
     testsfn = path.splitext(filename)[0] + '.tests'
     data['testsfn'] = testsfn

@@ -1,9 +1,9 @@
-
-from os import path
 import re
+
 
 def _add_to_each_line(src, add):
     return "\n".join([add + l for l in src.split('\n')])
+
 
 def gen_source_file(srcfn, outfn, args, comment):
     TEMPL = """\
@@ -24,6 +24,7 @@ Tests: {testsfn}"""
         out.write(src)
         out.write("\n")
 
+
 def gen_tests_file(outfn, args):
     # Header
     res = """
@@ -33,8 +34,8 @@ def gen_tests_file(outfn, args):
 """.format(**args)
 
     # Test intems
-    TEST_TMPL="""
-- Sample{i}: 
+    TEST_TMPL = """
+- Sample{i}:
     in: |
 {inp}
     out: |
@@ -50,6 +51,7 @@ def gen_tests_file(outfn, args):
     with open(outfn, 'w') as testsf:
         testsf.write(res)
         testsf.write(tests)
+
 
 def extract(filename):
     with open(filename, 'r') as srcf:

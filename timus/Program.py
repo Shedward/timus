@@ -51,6 +51,7 @@ class TestSet(object):
 class Program(object):
     """ Abstract program object """
     lang = None
+
     def __init__(self, source_fn, run_cmd=["{bin}"]):
         if source_fn:
             self.filename = path.abspath(source_fn)
@@ -79,7 +80,7 @@ class Program(object):
         return True
 
     def test(self, tests_file, run_count=1, mem_limit=None,
-               time_limit=None, diff_out=False):
+             time_limit=None, diff_out=False):
         """ Run program with tests.
 
         Tests should be list of [(<descr>, {in:"<in>", out:"<out>"})]
@@ -133,10 +134,12 @@ class Program(object):
                 LOG(Log.Err, "{0}: error: Test '{1}' failed:"
                              .format(self.source(), descr))
                 if (diff_out):
-                    LOG(Log.Err, ' ' + '\n '.join(ndiff(out.decode().splitlines(),
-                                                        recived.decode().splitlines())))
+                    diff = ndiff(out.decode().splitlines(),
+                                 recived.decode().splitlines())
+                    LOG(Log.Err, ' ' + '\n '.join(diff))
                 else:
-                    LOG(Log.Err, "Expected: ---------- \n'{0}'\n\nRecived: ----------\n'{1}'\n ------------"
+                    LOG(Log.Err, "Expected: ---------- \n'{0}'\n"
+                                 "\nRecived: ----------\n'{1}'\n ------------"
                                  .format(out.decode(), recived.decode()))
                 ret = RetCode.WrongOutput
 
@@ -214,12 +217,12 @@ class CompilingProgram(Program):
     def run(self, cmd=["{bin}"], inp=None, time_limit=None, mem_limit=None):
         if self.is_compiled or self.compile():
             return super(CompilingProgram, self) \
-                   .run(cmd=cmd, inp=inp, time_limit=time_limit,
-                        mem_limit=mem_limit)
+                .run(cmd=cmd, inp=inp,
+                     time_limit=time_limit, mem_limit=mem_limit)
 
     def test(self, tests, run_count=1, mem_limit=None,
-               time_limit=None, diff_out=False):
+             time_limit=None, diff_out=False):
         if self.is_compiled or self.compile():
-            return super(CompilingProgram, self).test(tests, run_count, mem_limit,
+            return super(CompilingProgram, self).test(tests, run_count,
+                                                      mem_limit,
                                                       time_limit, diff_out)
-

@@ -5,9 +5,8 @@ from time import sleep
 
 import psutil
 
-
-
 SLEEP = 0.2
+
 
 class TimeLimitExceeded(Exception):
     """Rises when observed process exceed said time limit"""

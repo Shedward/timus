@@ -5,6 +5,7 @@ from timus.Exceptions import WrongLang, NotSupportedExt
 from timus.Logger import Log
 from timus.Program import Program, CompilingProgram
 
+
 class CL(Compiler):
     """Visual C 2010"""
     def __init__(self):
@@ -202,6 +203,7 @@ class rubyProgram(Program):
         super(rubyProgram, self).__init__(source_fn=sourcefn,
                                           run_cmd=["ruby", "{bin}"])
 
+
 class scalac(Compiler):
     """Javac"""
     def __init__(self):
@@ -219,23 +221,24 @@ class scalaProgram(CompilingProgram):
                                            run_cmd=["scala", "-DONLINE_JUDGE",
                                                     "{bin}"])
 
+
 def program(lang):
     LANG = {
-        "cl"   : clProgram,
-        "cl++" : clppProgram,
-        "gcc"  : gccProgram,
+        "cl": clProgram,
+        "cl++": clppProgram,
+        "gcc": gccProgram,
         "gcc11": gcc11Program,
-        "g++"  : gppProgram,
+        "g++": gppProgram,
         "g++11": gpp11Program,
-        "pas"  : pasProgram,
-        "ghc"  : hsProgram,
-        "go"   : goProgram,
-        "c#"   : cscProgram,
-        "mono" : monoProgram,
-        "java" : javaProgram,
-        "py2"  : py2Program,
-        "py3"  : py3Program,
-        "rb"   : rubyProgram,
+        "pas": pasProgram,
+        "ghc": hsProgram,
+        "go": goProgram,
+        "c#": cscProgram,
+        "mono": monoProgram,
+        "java": javaProgram,
+        "py2": py2Program,
+        "py3": py3Program,
+        "rb": rubyProgram,
         "scala": scalaProgram
     }
     if lang in LANG:
@@ -244,24 +247,26 @@ def program(lang):
         raise WrongLang(lang)
 
 _DESC = {
-        'cl'   : "Visual C 2010",
-        'cl++' : "Visual C 2010",
-        'gcc'  : "GCC 4.7.2",
-        'gcc11': "GCC 4.7.2 with C11",
-        'g++'  : "G++ 4.7.2",
-        'g++11': "G++ 4.7.2 with C++11",
-        'pas'  : "FreePascal 2.4.0",
-        'ghc'  : "Haskell 7.6.1",
-        'go'   : "Go 1.7",
-        'c#'   : "Visual C#",
-        'mono' : "Mono 3.0.7",
-        'java' : "Java 1.7",
-        'py2'  : "Python 2.7",
-        'py3'  : "Python 3.3",
-        'rb'   : "Ruby 1.9.3",
-        'vb'   : "VB.NET 2010",
-        'scala': "Scala 2.10.1"
-    }
+    'cl': "Visual C 2010",
+    'cl++': "Visual C 2010",
+    'gcc': "GCC 4.7.2",
+    'gcc11': "GCC 4.7.2 with C11",
+    'g++': "G++ 4.7.2",
+    'g++11': "G++ 4.7.2 with C++11",
+    'pas': "FreePascal 2.4.0",
+    'ghc': "Haskell 7.6.1",
+    'go': "Go 1.7",
+    'c#': "Visual C#",
+    'mono': "Mono 3.0.7",
+    'java': "Java 1.7",
+    'py2': "Python 2.7",
+    'py3': "Python 3.3",
+    'rb': "Ruby 1.9.3",
+    'vb': "VB.NET 2010",
+    'scala': "Scala 2.10.1"
+}
+
+
 def lang_description(lang):
 
     if lang in _DESC:
@@ -270,23 +275,25 @@ def lang_description(lang):
         raise WrongLang(lang)
 
 _EXT = {
-    "cpp"  : ("g++", "cl++","g++11"),
-    "c"    : ("gcc", "cl", "gcc11"),
-    "pas"  : ("pas",),
-    "py"   : ("py3", "py2"),
-    "java" : ("java",),
-    "go"   : ("go",),
-    "hs"   : ("ghc",),
-    "rb"   : ("rb",),
-    "cs"   : ("mono", "c#"),
+    "cpp": ("g++", "cl++", "g++11"),
+    "c": ("gcc", "cl", "gcc11"),
+    "pas": ("pas",),
+    "py": ("py3", "py2"),
+    "java": ("java",),
+    "go": ("go",),
+    "hs": ("ghc",),
+    "rb": ("rb",),
+    "cs": ("mono", "c#"),
     "scala": ("scala",)
-    }
+}
+
 
 def lang_by_ext(ext):
     if ext in _EXT:
         return _EXT[ext]
     else:
         raise NotSupportedExt(ext)
+
 
 def ext_by_lang(lang):
     rev_EXT = {}
@@ -297,24 +304,28 @@ def ext_by_lang(lang):
     else:
         WrongLang(lang)
 
+
 def show_lang_list():
-    LANGS_LIST = '\n\t'.join([lang + " - " + desc for lang, desc in _DESC.items()])
+    LANGS_LIST = '\n\t'.join([lang + " - " + desc
+                              for lang, desc in _DESC.items()])
     MSG = """
         List of compilers/interpreters for -l option:
 
     """ + LANGS_LIST
     print(MSG)
 
+
 def autodetect_lang(filename):
     base, ext = path.splitext(filename)
     if ext != '':
-        ext = ext[1:] # remove leading dot
+        ext = ext[1:]  # remove leading dot
     LOG = Log()
     lang = lang_by_ext(ext)
     if len(lang) > 1:
         LOG(Log.Msg, "Warning: Suported '{0}', used '{1}' by default."
-                      .format(lang, lang[0]))
+            .format(lang, lang[0]))
     return lang[0]
+
 
 def TimusProgram(source, lang=None):
     if lang is None:

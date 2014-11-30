@@ -2,7 +2,8 @@
 from os import path
 
 from timus.Conf import Conf
-from timus.Exceptions import CompilationError, SourceFileNotFound, TestFileNotFound, WrongParams
+from timus.Exceptions import CompilationError, SourceFileNotFound
+from timus.Exceptions import TestFileNotFound, WrongParams
 from timus.Logger import Log
 from timus.OnlineJudje import submit, init
 from timus.Options import Options
